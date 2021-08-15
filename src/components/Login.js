@@ -3,7 +3,8 @@ import axios from 'axios';
 
 
 import {
-    Link
+    Link,
+    useHistory 
 } from "react-router-dom"
 
 import { Grid, TextField, Paper, Avatar, Button } from '@material-ui/core';
@@ -26,6 +27,7 @@ const Login = (props) => {
         setPassword(event.target.value);
         // console.log(password)
     };
+    let history = useHistory();
 
     const formSubmissionHandler = async (event) => {
         event.preventDefault();
@@ -40,6 +42,9 @@ const Login = (props) => {
                 setErrorMsg('Username or Password Invalid')
                 setErrorText(true);
                 console.log(errorText)
+            }
+            else{
+                history.push('/') 
             }
 
         } catch (errorMsg) {
@@ -84,7 +89,7 @@ const Login = (props) => {
                             <TextField
                                 required
                                 error={errorText}
-                                id="outlined-password-input"
+                                // id="outlined-password-input"
                                 label="Password"
                                 type="password"
                                 variant="outlined"
@@ -102,7 +107,7 @@ const Login = (props) => {
                             </Grid>
                         </form>
 
-                        <span style={errorMessageColor}>{errorMsg}</span>
+                        <span style={errorMessageColor}><b>{errorMsg}</b></span>
 
 
                         <Link to="/register"> New here? Sign Up</Link>

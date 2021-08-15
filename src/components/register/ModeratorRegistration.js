@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -20,12 +20,48 @@ const StudentRegistration = (props) => {
     const headerStyle = { margin: '10px'}
     const margin = { margin: "10px auto" }
 
+    const [name,setname] = useState("");
+    const [uname,setuname] = useState("");
+    const [password,setPassword] = useState("");
+    const [confirmPassword,setConfirmPassword] = useState("");
+    const [email,setEmail] = useState("");
+    const [contact,setContact] = useState("");
+    const [address,setAddress] = useState("");
+    const [image,setImage] = useState("");
 
+    const nameInputChangeHandler = event => {
+        setname(event.target.value);
+    };
+    const unamelInputChangeHandler = event => {
+        setuname(event.target.value);
+    };
+    const passwordInputChangeHandler = event => {
+        setPassword(event.target.value);
+    };
+    const confirmPasswordInputChangeHandler = event => {
+        setConfirmPassword(event.target.value);
+    };
+    const emailInputChangeHandler = event => {
+        setEmail(event.target.value);
+    };
+    const ContactInputChangeHandler = event => {
+        setContact(event.target.value);
+    };
+    const addressInputChangeHandler = event => {
+        setAddress(event.target.value);
+    };
+    const imageUploadHandler = event => {
+        console.log("TEST");
+    };
+    const formSubmissionHandler = async (event) => {
+        
+    };
 
+    let userData = {name,email,password,confirmPassword, address,contact,uname}
 
     return (
         <div>
-
+                    {console.log(userData)}
             <div >
                 <Paper elevation={10} style={paperStyle}>
                     <Grid
@@ -38,32 +74,32 @@ const StudentRegistration = (props) => {
                         <SupervisedUserCircleOutlinedIcon />
                         <h2 style={headerStyle}>Moderator Registration</h2>
                         <br />
-                        <form className="submit" >
+                        <form className="submit" onSubmit={formSubmissionHandler} >
                             <Grid container spacing={3} justifyContent="center">
                                 <Grid item xs={12} sm={6}>
                                     
                                     <TextField
-                                        // name="fullName"
-                                        required
-                                        // id="outlined-required"
+                                        // required
                                         label="Full Name"
                                         variant="outlined"
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start"><PersonIcon /></InputAdornment>,
                                         }}
                                         style={margin}
+                                        onChange = {nameInputChangeHandler}
                                     />
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        required
+                                        // required
                                         label="Username"
                                         variant="outlined"
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start"><b>@</b></InputAdornment>,
                                         }}
                                         style={margin}
+                                        onChange = {unamelInputChangeHandler}
                                     />
                                 </Grid>
                             </Grid>
@@ -71,7 +107,7 @@ const StudentRegistration = (props) => {
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        required
+                                        // required
                                         label="Password"
                                         type="password"
                                         variant="outlined"
@@ -79,11 +115,12 @@ const StudentRegistration = (props) => {
                                             startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
                                         }}
                                         style={margin}
+                                        onChange = {passwordInputChangeHandler}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        required
+                                        // required
                                         label="Confirm Password"
                                         type="password"
                                         variant="outlined"
@@ -91,6 +128,7 @@ const StudentRegistration = (props) => {
                                             startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
                                         }}
                                         style={margin}
+                                        onChange = {confirmPasswordInputChangeHandler}
                                     />
                                 </Grid>
                             </Grid>
@@ -98,24 +136,26 @@ const StudentRegistration = (props) => {
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        required
+                                        // required
                                         label="Email"
                                         variant="outlined"
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start"><EmailOutlinedIcon /></InputAdornment>,
                                         }}
                                         style={margin}
+                                        onChange = {emailInputChangeHandler}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6} >
                                     <TextField
-                                        required
-                                        label="Phone No."
+                                        // required
+                                        label="Contact No."
                                         variant="outlined"
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start"><PhoneIcon /></InputAdornment>,
                                         }}
                                         style={margin}
+                                        onChange = {ContactInputChangeHandler}
                                     />
                                 </Grid>
                             </Grid>
@@ -132,13 +172,14 @@ const StudentRegistration = (props) => {
                                     // justifyContent="center"
                                     alignItems="center">
                                     <TextField
-                                        required
+                                        // required
                                         label="Address"
                                         variant="outlined"
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start"><ContactMailOutlinedIcon /></InputAdornment>,
                                         }}
                                         style={txtField}
+                                        onChange = {addressInputChangeHandler}
                                     />
                                 </Grid>
                                 <br />
@@ -147,9 +188,10 @@ const StudentRegistration = (props) => {
                                     container
                                     direction="row"
                                     // justifyContent="center"
-                                    alignItems="center">
+                                    alignItems="center"
+                                    >
                                     <TextField
-                                        required
+                                        // required
                                         type="file"
                                         label="Profile Picture"
                                         variant="outlined"
@@ -157,6 +199,7 @@ const StudentRegistration = (props) => {
                                             startAdornment: <InputAdornment position="start"><ImageOutlinedIcon /></InputAdornment>
                                         }}
                                         style={txtField}
+                                        onChange = {imageUploadHandler}
                             
 
                                     />
