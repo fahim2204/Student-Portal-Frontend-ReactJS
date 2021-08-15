@@ -49,54 +49,63 @@ const Login = (props) => {
         backgroundColor: 'rgb(216, 219, 221)'
     }
 
-    // const backGround = { backgroundColor: 'rgb(216, 219, 221)' }
-    const paperStyle = { padding: "50px", width: 500, margin: "253px auto" }
+    const paperStyle = { padding: "50px", width: "40%", maxWidth: "400px", minWidth: "300px", margin: "auto", marginTop: "10%" }
     const headerStyle = { margin: '10px' }
-    // const avatarStyle = { backgroundColor: '#1bbd7e' }
     const margin = { margin: "10px auto" }
 
 
     return (
         <div style={rootStyle}>
-            <Router >
-                <div >
-                    <Paper elevation={10} style={paperStyle}>
-                        <Grid align='center'>
-                            <Grid align='center'>
-                                <Avatar />
-                                <h2 style={headerStyle}>Login</h2>
-                            </Grid>
-                            <form className="submit" onSubmit={formSubmissionHandler}>
-                                <TextField
-                                    required
-                                    // id="outlined-required"
-                                    label="Username"
-                                    // defaultValue=""
-                                    variant="outlined"
-                                    style={margin}
-                                    onChange={usernamelInputChangeHandler}
-                                />
-                                <br />
-                                <TextField
-                                    required
-                                    id="outlined-password-input"
-                                    label="Password"
-                                    type="password"
-                                    // autoComplete="current-password"
-                                    variant="outlined"
-                                    style={margin}
-                                    onChange={passwordInputChangeHandler}
-                                />
-                                <br /><br />
-                                <Button type='submit' variant='contained' color='primary' size="large">Login</Button>
 
-                            </form>
+            <div >
+                <Paper elevation={10} style={paperStyle}>
+                    <Grid
+                        container
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        
+                            <Avatar />
+                            <h2 style={headerStyle}>Login</h2>
+                        <form className="submit" onSubmit={formSubmissionHandler}>
+                            <TextField
+                                required
+                                label="Username"
+                                variant="outlined"
+                                style={margin}
+                                onChange={usernamelInputChangeHandler}
+                            />
                             <br />
-                            <Link to="/registration"> New here? Sign Up</Link>
-                        </Grid>
-                    </Paper>
-                </div>
-            </Router>
+                            <TextField
+                                required
+                                id="outlined-password-input"
+                                label="Password"
+                                type="password"
+                                variant="outlined"
+                                style={margin}
+                                onChange={passwordInputChangeHandler}
+                            />
+                            <br /><br />
+                            <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <Button type='submit' variant='contained' color='primary' size="large">Login</Button>
+                            </Grid>
+                        </form>
+                        <br />
+
+
+                        <Link to="/register"> New here? Sign Up</Link>
+
+
+                    </Grid>
+                </Paper>
+            </div>
+
         </div>
     );
 };
