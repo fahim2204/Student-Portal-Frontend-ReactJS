@@ -1,24 +1,23 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 
-import SchoolOutlinedIcon from '@material-ui/icons/SchoolOutlined';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import PersonIcon from '@material-ui/icons/Person';
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import PhoneIcon from '@material-ui/icons/Phone';
 import ContactMailOutlinedIcon from '@material-ui/icons/ContactMailOutlined';
-// import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
+import SupervisedUserCircleOutlinedIcon from '@material-ui/icons/SupervisedUserCircleOutlined';
 
 import { Grid, TextField, Paper, Button } from '@material-ui/core';
 
 
 const StudentRegistration = (props) => {
 
-    const paperStyle = { padding: "50px", width: "60%", maxWidth: "600px", minWidth: "400px", margin: "auto", marginTop: "5%", marginBottom: "5%" }
+    const paperStyle = { padding: "50px", width: "60%", maxWidth: "600px", minWidth: "300px", margin: "auto", marginTop: "5%", marginBottom: "5%" }
     const txtField = { width: "80%" , margin: "10px auto"}
-    const headerStyle = { margin: '10px' }
+    const headerStyle = { margin: '10px'}
     const margin = { margin: "10px auto" }
 
 
@@ -36,11 +35,11 @@ const StudentRegistration = (props) => {
                         alignItems="center"
                     >
 
-                        <SchoolOutlinedIcon />
+                        <SupervisedUserCircleOutlinedIcon />
                         <h2 style={headerStyle}>Moderator Registration</h2>
                         <br />
                         <form className="submit" >
-                            <Grid container spacing={3}>
+                            <Grid container spacing={3} justifyContent="center">
                                 <Grid item xs={12} sm={6}>
                                     
                                     <TextField
@@ -59,7 +58,6 @@ const StudentRegistration = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
-                                        id="outlined-required"
                                         label="Username"
                                         variant="outlined"
                                         InputProps={{
@@ -74,7 +72,6 @@ const StudentRegistration = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
-                                        id="outlined-password-input"
                                         label="Password"
                                         type="password"
                                         variant="outlined"
@@ -87,7 +84,6 @@ const StudentRegistration = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
-                                        id="outlined-password-input"
                                         label="Confirm Password"
                                         type="password"
                                         variant="outlined"
@@ -102,9 +98,7 @@ const StudentRegistration = (props) => {
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        // name="fullName"
                                         required
-                                        // id="outlined-required"
                                         label="Email"
                                         variant="outlined"
                                         InputProps={{
@@ -113,11 +107,9 @@ const StudentRegistration = (props) => {
                                         style={margin}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} >
                                     <TextField
-                                        // name="fullName"
                                         required
-                                        // id="outlined-required"
                                         label="Phone No."
                                         variant="outlined"
                                         InputProps={{
@@ -128,26 +120,7 @@ const StudentRegistration = (props) => {
                                 </Grid>
                             </Grid>
                             <br />
-                            {/* <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <TextField
-                                    // name="fullName"
-                                    required
-                                    // id="outlined-required"
-                                    label="Address"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><ContactMailOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    style={margin}
-                                />
-
-
-                            </Grid> */}
+                            
 
                             <Grid
                                 
@@ -156,12 +129,10 @@ const StudentRegistration = (props) => {
                                 <Grid item xs={12}
                                     container
                                     direction="row"
-                                    justifyContent="center"
+                                    // justifyContent="center"
                                     alignItems="center">
                                     <TextField
-                                        // name="fullName"
                                         required
-                                        // id="outlined-required"
                                         label="Address"
                                         variant="outlined"
                                         InputProps={{
@@ -175,13 +146,11 @@ const StudentRegistration = (props) => {
                                 <Grid item xs={12}
                                     container
                                     direction="row"
-                                    justifyContent="center"
+                                    // justifyContent="center"
                                     alignItems="center">
                                     <TextField
-                                        // name="fullName"
                                         required
                                         type="file"
-                                        // id="outlined-required"
                                         label="Profile Picture"
                                         variant="outlined"
                                         InputProps={{

@@ -16,7 +16,7 @@ import { Grid, TextField, Paper, Button } from '@material-ui/core';
 
 const StudentRegistration = (props) => {
 
-    const paperStyle = { padding: "50px", width: "60%", maxWidth: "600px", minWidth: "400px", margin: "auto", marginTop: "5%", marginBottom: "5%" }
+    const paperStyle = { padding: "50px", width: "60%", maxWidth: "600px", minWidth: "300px", margin: "auto", marginTop: "5%", marginBottom: "5%" }
     const headerStyle = { margin: '10px' }
     const margin = { margin: "10px auto" }
 
@@ -42,9 +42,7 @@ const StudentRegistration = (props) => {
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        // name="fullName"
                                         required
-                                        // id="outlined-required"
                                         label="Full Name"
                                         variant="outlined"
                                         InputProps={{
@@ -57,7 +55,6 @@ const StudentRegistration = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
-                                        id="outlined-required"
                                         label="Username"
                                         variant="outlined"
                                         InputProps={{
@@ -72,7 +69,6 @@ const StudentRegistration = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
-                                        id="outlined-password-input"
                                         label="Password"
                                         type="password"
                                         variant="outlined"
@@ -165,7 +161,6 @@ const StudentRegistration = (props) => {
                         >
                             
                             <TextField
-                                // name="fullName"
                                 required
                                 type="file"
                                 // id="outlined-required"

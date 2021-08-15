@@ -15,7 +15,7 @@ const Registration = (props) => {
   }
 
   
-    const paperStyle = { padding: "50px", width: "40%", maxWidth: "400px", minWidth: "300px", margin: "auto", marginTop: "10%", marginBottom: "10%" }
+    const paperStyle = { padding: "50px", width: "40%", maxWidth: "400px", minWidth: "300px", margin: "auto", marginTop: "100px", marginBottom: "10%" }
     const headerStyle = { margin: '10px' }
   
     return (

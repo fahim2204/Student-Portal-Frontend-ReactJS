@@ -1,25 +1,26 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 
-import SchoolOutlinedIcon from '@material-ui/icons/SchoolOutlined';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import PersonIcon from '@material-ui/icons/Person';
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import PhoneIcon from '@material-ui/icons/Phone';
 import ContactMailOutlinedIcon from '@material-ui/icons/ContactMailOutlined';
-// import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
+import AccountBalanceOutlineddIcon from '@material-ui/icons/AccountBalanceOutlined';
+
 
 import { Grid, TextField, Paper, Button } from '@material-ui/core';
 
 
 const StudentRegistration = (props) => {
 
-    const paperStyle = { padding: "50px", width: "60%", maxWidth: "600px", minWidth: "400px", margin: "auto", marginTop: "5%", marginBottom: "5%" }
+    const paperStyle = { padding: "50px", width: "60%", maxWidth: "600px", minWidth: "300px", margin: "auto", marginTop: "5%", marginBottom: "5%" }
     const txtField = { width: "100%", margin: "10px auto" }
     const headerStyle = { margin: '10px' }
     const margin = { margin: "10px auto" }
+    const iconSize = { fontSize: "large" }
 
 
 
@@ -36,16 +37,14 @@ const StudentRegistration = (props) => {
                         alignItems="center"
                     >
 
-                        <SchoolOutlinedIcon />
+                        <AccountBalanceOutlineddIcon style={iconSize} />
                         <h2 style={headerStyle}>Instructor Registration</h2>
                         <br />
                         <form className="submit" >
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        // name="fullName"
                                         required
-                                        // id="outlined-required"
                                         label="Full Name"
                                         variant="outlined"
                                         InputProps={{
@@ -58,7 +57,6 @@ const StudentRegistration = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
-                                        id="outlined-required"
                                         label="Username"
                                         variant="outlined"
                                         InputProps={{
@@ -73,7 +71,6 @@ const StudentRegistration = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
-                                        id="outlined-password-input"
                                         label="Password"
                                         type="password"
                                         variant="outlined"
