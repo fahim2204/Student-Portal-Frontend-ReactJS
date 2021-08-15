@@ -8,7 +8,7 @@ import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import PhoneIcon from '@material-ui/icons/Phone';
 import ContactMailOutlinedIcon from '@material-ui/icons/ContactMailOutlined';
-import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
+// import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 
 import { Grid, TextField, Paper, Button } from '@material-ui/core';
@@ -17,7 +17,7 @@ import { Grid, TextField, Paper, Button } from '@material-ui/core';
 const StudentRegistration = (props) => {
 
     const paperStyle = { padding: "50px", width: "60%", maxWidth: "600px", minWidth: "400px", margin: "auto", marginTop: "5%", marginBottom: "5%" }
-    const txtField = { width: "100%" }
+    const txtField = { width: "80%" , margin: "10px auto"}
     const headerStyle = { margin: '10px' }
     const margin = { margin: "10px auto" }
 
@@ -42,6 +42,7 @@ const StudentRegistration = (props) => {
                         <form className="submit" >
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6}>
+                                    
                                     <TextField
                                         // name="fullName"
                                         required
@@ -147,42 +148,49 @@ const StudentRegistration = (props) => {
 
 
                             </Grid> */}
-                            
+
                             <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
+                                
                                 container spacing={3}
                             >
-                                <Grid item xs={12}>
-                                <TextField
-                                    // name="fullName"
-                                    required
-                                    // id="outlined-required"
-                                    label="Address"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><ContactMailOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    style={margin, txtField }
-                                />
-                            </Grid>
-                            <br/>
-                            <br/>
-                            <Grid item xs={12}>
-                                <TextField
-                                    // name="fullName"
-                                    required
-                                    type="file"
-                                    // id="outlined-required"
-                                    label="Profile Picture"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><ImageOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    style={margin, txtField}
-                                />
+                                <Grid item xs={12}
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center">
+                                    <TextField
+                                        // name="fullName"
+                                        required
+                                        // id="outlined-required"
+                                        label="Address"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><ContactMailOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        style={txtField}
+                                    />
+                                </Grid>
+                                <br />
+                                <br />
+                                <Grid item xs={12}
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center">
+                                    <TextField
+                                        // name="fullName"
+                                        required
+                                        type="file"
+                                        // id="outlined-required"
+                                        label="Profile Picture"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><ImageOutlinedIcon /></InputAdornment>
+                                        }}
+                                        style={txtField}
+                            
+
+                                    />
                                 </Grid>
                             </Grid>
                             <br />

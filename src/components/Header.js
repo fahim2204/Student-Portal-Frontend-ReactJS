@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+
 const Header = () => {
     return (
         <>
@@ -20,6 +21,7 @@ const Header = () => {
                         <div className="col-4 d-flex justify-content-end align-items-center">
                             <Link className="btn btn-outline-success me-3" to="/register">Register</Link>
                             <Link className="btn btn-outline-primary me-3" to="/login">Login</Link>
+                            
                         </div>
                     </div>
                 </header>
