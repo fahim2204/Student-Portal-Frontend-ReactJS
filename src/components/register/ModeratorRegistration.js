@@ -189,7 +189,7 @@ const ModeratorRegistration = (props) => {
 
                         if(typeof(res.data.uname) !== 'undefined'){
 
-                            setUnameValidation("Uname Has Already Been Taken")
+                            setUnameValidation("Username Has Already Been Taken")
 
                             setUnameValidationText(true)
 
@@ -209,7 +209,7 @@ const ModeratorRegistration = (props) => {
 
 
 
-                        history.push("/login?msg=RegistrationSuccess")
+                        history.push("/login?msg=Registration%20Success")
 
                     }
                 

@@ -208,7 +208,7 @@ const StudentRegistration = (props) => {
                     }
                     else{
 
-                        history.push("/login?msg=RegistrationSuccess")
+                        history.push("/login?msg=Registration%20Success")
                     }
                 
                  
