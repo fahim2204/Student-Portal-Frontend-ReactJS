@@ -92,7 +92,7 @@ const ModeratorRegistration = (props) => {
         formData.append('image', image)
         
 
-            if (name === "" || uname === "" || password === "" || cpassword === "" || email === "" || contact === "" || address === "" || image === "") {
+            if (name === "" || uname === "" || password === "" || cpassword === "" || email === "" || contact === "" || address === "" || image === "" || password !== cpassword) {
                 if(name.length<3){
                     setNameValidation("Full Name is not Valid")
                     setNameValidationText(true)
@@ -177,22 +177,40 @@ const ModeratorRegistration = (props) => {
                     console.log(res.status)
                     if(res.data !== true){
 
+
+
                         if(typeof(res.data.email) !== 'undefined'){
+
                             setEmailValidation("Email Has Already Been Taken")
-                            // setEmailValidationText(true)
+
+                            setEmailValidationText(true)
+
                         }
+
                         if(typeof(res.data.uname) !== 'undefined'){
+
                             setUnameValidation("Uname Has Already Been Taken")
-                            // setUnameValidationText(true)
+
+                            setUnameValidationText(true)
+
                         }
+
                         if(typeof(res.data.image) !== 'undefined'){
+
                             setImageValidation("The image must be a file of type: jpeg, jpg, png.")
-                            // setImageValidationText(true)
+
+                            setImageValidationText(true)
+
                         }
+
                     }
+
                     else{
 
+
+
                         history.push("/login?msg=RegistrationSuccess")
+
                     }
                 
                  
