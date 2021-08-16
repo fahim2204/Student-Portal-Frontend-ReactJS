@@ -47,6 +47,7 @@ const ModeratorRegistration = (props) => {
     const [contactValidationText, setContactValidationText] = useState(false);
     const [addressValidationText, setAddressValidationText] = useState(false);
     const [imageValidationText, setImageValidationText] = useState(false);
+    const [emailServerError, setEmailServerError] = useState("");
 
     const nameInputChangeHandler = event => {
         setname(event.target.value);
@@ -61,7 +62,7 @@ const ModeratorRegistration = (props) => {
     const confirmPasswordInputChangeHandler = event => {
         setCpassword(event.target.value);
     };
-    const emailInputChangeHandler = event => {
+    const emailInputChangeHandler = (event) => {
         setEmail(event.target.value);
     };
     const ContactInputChangeHandler = event => {
@@ -158,30 +159,45 @@ const ModeratorRegistration = (props) => {
                     setUnameValidationText(false)
                     setImageValidation("")
                     setImageValidationText(false)
+                    setAddressValidation("")
+                    setAddressValidationText(false)
+                    setContactValidation("")
+                    setContactValidationText(false)
+                    setCpasswordValidation("")
+                    setCpasswordValidationText(false)
+                    setPasswordValidation("")
+                    setPasswordValidationText(false)
+                    setNameValidation("")
+                    setNameValidationText(false)
                     const res = await axios.post(`http://127.0.0.1:8000/api/moderator/registration`, formData);
-                    console.log(res.data) 
+                    console.log(res) 
                     // const serverMsg = res.data
+                    // setEmailServerError(res.data.email[0])
 
-                   
-                    if(res.data.email[0] !== ""){
-                        setEmailValidation(res.data.email[0])
-                        setEmailValidationText(true)
-                    }
-                    if(res.data.uname[0] !== ""){
-                        setUnameValidation(res.data.uname[0])
-                        setUnameValidationText(true)
-                    }
-                    if(res.data.image[0] !== ""){
-                        setImageValidation(res.data.image[0])
-                        console.log(imageValidation)
-                        setImageValidationText(true)
-                    }
-                   
+                    console.log(res.status)
+                    if(res.data !== true){
 
-                    history.push("/login?msg=RegistrationSuccess")
+                        if(typeof(res.data.email) !== 'undefined'){
+                            setEmailValidation("Email Has Already Been Taken")
+                            // setEmailValidationText(true)
+                        }
+                        if(typeof(res.data.uname) !== 'undefined'){
+                            setUnameValidation("Uname Has Already Been Taken")
+                            // setUnameValidationText(true)
+                        }
+                        if(typeof(res.data.image) !== 'undefined'){
+                            setImageValidation("The image must be a file of type: jpeg, jpg, png.")
+                            // setImageValidationText(true)
+                        }
+                    }
+                    else{
+
+                        history.push("/login?msg=RegistrationSuccess")
+                    }
                 
                  
                 } catch (errorMsg) {
+                    
                 console.log(errorMsg);
             }
 
