@@ -9,16 +9,12 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         minWidth: "75%",
     },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-    root: {
-        flexGrow: 1,
-    },
+
     paper: {
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
+        margin: theme.spacing(5),
     },
 
 }));
@@ -30,7 +26,7 @@ const CreatePosts = () => {
     const classes = useStyles();
     const [state, setState] = useState({
         category: '',
-        // name: 'hai',
+        name: '',
     });
 
     const handleChange = (event) => {
@@ -46,13 +42,11 @@ const CreatePosts = () => {
     return (
         <div>
             <Grid container spacing={3} justifyContent="center">
-                <Grid item xs={10}>
+                <Grid item xs={12}>
                     <form>
                         <Paper className={classes.paper}>
-                            <h2>Create Post</h2>
-                            {/* <Grid item xs={12}> */}
+                            <h1>Create Post</h1>
                             <FormControl required variant="outlined" className={classes.formControl}>
-                                {/* <Grid item xs={9}> */}
                                 <InputLabel >Category</InputLabel>
                                 <Select
                                     native
@@ -69,15 +63,10 @@ const CreatePosts = () => {
                                     <option value={20}>Twenty</option>
                                     <option value={30}>Thirty</option>
                                 </Select>
-                                {/* </Grid> */}
                             </FormControl>
-                            {/* </Grid> */}
 
-                            {/* <Grid item xs={12}> */}
                             <TextField required label="Title" variant="outlined" className={classes.formControl} />
-                            {/* </Grid> */}
-                            {/* <Grid item xs={12}> */}
-                            {/* <TextField label="Multiline" id="outlined-multiline-static" required variant="outlined" rows={4} className={classes.formControl} /> */}
+                            
                             <TextField
                                 required
                                 label="Post Content"
@@ -86,9 +75,7 @@ const CreatePosts = () => {
                                 variant="outlined"
                                 className={classes.formControl}
                             />
-                            {/* </Grid> */}
                             <Grid container spacing={5} justifyContent="center">
-                                {/* <Grid item xs={12}> */}
                                 <Grid item xs={3}>
                                     <Link to="#" style={{ textDecoration: 'none' }}>
                                         <Button variant="contained" size="large" color="primary">
@@ -104,9 +91,6 @@ const CreatePosts = () => {
                                     </Link>
                                 </Grid>
                             </Grid>
-                            {/* </Grid> */}
-
-
                         </Paper>
                     </form>
                 </Grid>
