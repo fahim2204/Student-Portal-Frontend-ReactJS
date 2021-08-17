@@ -8,6 +8,7 @@ import StudentRegistration from './components/register/StudentRegistration'
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
 import View from './components/profile/View';
+import Edit from './components/profile/Edit';
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route exact path="/profile/view">
               <View/>
+          </Route>
+          <Route exact path="/profile/edit">
+              <Edit/>
           </Route>
         </Switch>
       </Router>
