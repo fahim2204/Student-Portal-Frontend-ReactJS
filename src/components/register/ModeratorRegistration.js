@@ -47,7 +47,7 @@ const ModeratorRegistration = (props) => {
     const [contactValidationText, setContactValidationText] = useState(false);
     const [addressValidationText, setAddressValidationText] = useState(false);
     const [imageValidationText, setImageValidationText] = useState(false);
-    const [emailServerError, setEmailServerError] = useState("");
+    // const [emailServerError, setEmailServerError] = useState("");
 
     const nameInputChangeHandler = event => {
         setname(event.target.value);

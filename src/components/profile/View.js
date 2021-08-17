@@ -1,10 +1,10 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Link
 } from "react-router-dom"
 
-import { Breadcrumbs, CssBaseline, Typography, Container, makeStyles, Paper, Card, CardContent, TextField, Grid, Box, Button, Fab } from '@material-ui/core'
+import { Breadcrumbs, CssBaseline, Typography, Container, makeStyles, Paper, Card, CardContent, Grid, Box, Button, Fab } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit';
 import OwnPost from './OwnPost';
 
@@ -46,6 +46,19 @@ const useStyles = makeStyles((theme) => ({
 
 
 const View = () => {
+
+    const regMsgColor = { color: "green", padding: "10px" }
+    const [regMsg, setRegMsg] = useState("");
+    useEffect(() => {
+
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        const foo = params.get('msg');
+        setRegMsg(foo)
+        // console.log(regMsg)
+
+    }, [])
+
 
     const classes = useStyles();
     // const grid = { margin: "10px auto", padding: "10px", weight: "90%"  }
@@ -122,7 +135,7 @@ const View = () => {
             <CssBaseline />
             <Grid item xs={12}>
                 <Container>
-
+                
 
                     {/* <Grid
                     container
@@ -133,7 +146,7 @@ const View = () => {
                     <div className={classes.root}>
 
                         <Grid container spacing={3} >
-                            <Grid item xs={12} sm={12} md={4}>
+                            <Grid item xs={12} sm={4} md={4}>
                                 <Card >
                                     <CardContent >
                                         <Grid container spacing={3} >
@@ -163,13 +176,17 @@ const View = () => {
 
                                                     </Fab>
                                                 </Link>
+                                                
+                                            </Grid>
+                                            <Grid item xs={12} className={classes.username}>
+                                            <span style={regMsgColor} ><b>{regMsg}</b></span>
                                             </Grid>
 
                                         </Grid>
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item xs={12} sm={12} md={8}>
+                            <Grid item xs={12} sm={8} md={8}>
                                 <Card >
                                     <CardContent >
                                         <Grid container spacing={3}>
