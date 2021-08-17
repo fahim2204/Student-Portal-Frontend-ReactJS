@@ -66,7 +66,7 @@ const CreatePosts = () => {
                             </FormControl>
 
                             <TextField required label="Title" variant="outlined" className={classes.formControl} />
-                            
+
                             <TextField
                                 required
                                 label="Post Content"
