@@ -1,23 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-
-// import Registration from './Registration/Registration'
-
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
+    Link,
+    useHistory
 } from "react-router-dom"
 
 import { Grid, TextField, Paper, Avatar, Button } from '@material-ui/core';
-// import { FormControl } from '@material-ui/core';
+
+
 
 
 const Login = (props) => {
 
     const [uname, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
+    const [regMsg, setRegMsg] = useState("");
+    const [errorText, setErrorText] = useState(false);
+
 
     const usernamelInputChangeHandler = event => {
         setUsername(event.target.value);
@@ -27,6 +27,7 @@ const Login = (props) => {
         setPassword(event.target.value);
         // console.log(password)
     };
+    let history = useHistory();
 
     const formSubmissionHandler = async (event) => {
         event.preventDefault();
@@ -34,69 +35,97 @@ const Login = (props) => {
         let result = { uname, password }
         console.log(result);
         try {
-            await axios.post(`http://127.0.0.1:8000/api/login`, result)
-        } catch (error) {
-            console.log(error);
+            const res = await axios.post(`http://127.0.0.1:8000/api/login`, result);
+            console.log(res.data);
+            //    const error = '';
+            if (res.data.id == null) {
+                setErrorMsg('Username or Password Invalid')
+                setErrorText(true);
+                console.log(errorText)
+            }
+            else {
+                history.push('/')
+            }
+
+        } catch (errorMsg) {
+            console.log(errorMsg);
+
         }
     };
 
-    var rootStyle = {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgb(216, 219, 221)'
-    }
 
-    // const backGround = { backgroundColor: 'rgb(216, 219, 221)' }
-    const paperStyle = { padding: "50px", width: 500, margin: "253px auto" }
+    const paperStyle = { padding: "50px", width: "30%", maxWidth: "300px", margin: "auto", marginTop: "150px" }
     const headerStyle = { margin: '10px' }
-    // const avatarStyle = { backgroundColor: '#1bbd7e' }
     const margin = { margin: "10px auto" }
+    const errorMessageColor = { color: "red", padding: "10px" }
+    const regMsgColor = { color: "green", padding: "10px" }
+    useEffect(() => {
+        
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        const foo = params.get('msg');
+        setRegMsg(foo)
+        // console.log(regMsg)
 
+    }, [])
 
     return (
-        <div style={rootStyle}>
-            <Router >
-                <div >
-                    <Paper elevation={10} style={paperStyle}>
-                        <Grid align='center'>
-                            <Grid align='center'>
-                                <Avatar />
-                                <h2 style={headerStyle}>Login</h2>
-                            </Grid>
-                            <form className="submit" onSubmit={formSubmissionHandler}>
-                                <TextField
-                                    required
-                                    // id="outlined-required"
-                                    label="Username"
-                                    // defaultValue=""
-                                    variant="outlined"
-                                    style={margin}
-                                    onChange={usernamelInputChangeHandler}
-                                />
-                                <br />
-                                <TextField
-                                    required
-                                    id="outlined-password-input"
-                                    label="Password"
-                                    type="password"
-                                    // autoComplete="current-password"
-                                    variant="outlined"
-                                    style={margin}
-                                    onChange={passwordInputChangeHandler}
-                                />
-                                <br /><br />
-                                <Button type='submit' variant='contained' color='primary' size="large">Login</Button>
+        <div>
+            <div >
+                <Paper elevation={10} style={paperStyle}>
+                    <Grid
+                        container
 
-                            </form>
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+
+                        <Avatar />
+                        <h2 style={headerStyle}>Login</h2>
+                        <form className="submit" onSubmit={formSubmissionHandler}>
+                            {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
+                            <TextField
+                                required
+                                error={errorText}
+                                label="Username"
+                                variant="outlined"
+                                style={margin}
+                                onChange={usernamelInputChangeHandler}
+                            />
                             <br />
-                            <Link to="/registration"> New here? Sign Up</Link>
-                        </Grid>
-                    </Paper>
-                </div>
-            </Router>
+                            <TextField
+                                required
+                                error={errorText}
+                                // id="outlined-password-input"
+                                label="Password"
+                                type="password"
+                                variant="outlined"
+                                style={margin}
+                                onChange={passwordInputChangeHandler}
+                            />
+                            <br /><br />
+                            <Grid
+                                container
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <Button type='submit' variant='contained' color='primary' size="large">Login</Button>
+                            </Grid>
+                        </form>
+
+                        <span style={errorMessageColor}><b>{errorMsg}</b></span>
+                        <span style={regMsgColor}><b>{regMsg}</b></span>
+
+
+                        <Link to="/register"> New here? Sign Up</Link>
+
+
+                    </Grid>
+                </Paper>
+            </div>
+
         </div>
     );
 };

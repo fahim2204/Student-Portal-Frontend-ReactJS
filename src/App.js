@@ -7,6 +7,9 @@ import ModeratorRegistration from './components/register/ModeratorRegistration'
 import StudentRegistration from './components/register/StudentRegistration'
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
+import View from './components/profile/View';
+import Edit from './components/profile/Edit';
+import CreatePosts from './components/posts/CreatePosts';
 
 function App() {
   return (
@@ -30,6 +33,15 @@ function App() {
           </Route>
           <Route exact path="/register/student">
               <StudentRegistration/>
+          </Route>
+          <Route exact path="/profile/view">
+              <View/>
+          </Route>
+          <Route exact path="/profile/edit">
+              <Edit/>
+          </Route>
+          <Route exact path="/posts/create">
+              <CreatePosts/>
           </Route>
         </Switch>
       </Router>
