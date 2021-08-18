@@ -1,7 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 
 const Header = () => {
+    let history = useHistory();
+    const LogoutFunc = ()=>{
+        localStorage.clear();
+        history.push('/login');
+        console.log("history pushed");
+    }
+
     return (
         <>
 
@@ -19,8 +26,17 @@ const Header = () => {
                             <a className="blog-header-logo text-dark" href="{{ route('home') }}">Student Portal</a>
                         </div>
                         <div className="col-4 d-flex justify-content-end align-items-center">
-                            <Link className="btn btn-outline-success me-3" to="/register">Register</Link>
-                            <Link className="btn btn-outline-primary me-3" to="/login">Login</Link>
+                            {sessionStorage.getItem('id')===null &&
+                                <>
+                                
+                                <Link className="btn btn-outline-primary me-3" to="/login">Login</Link>
+                                <Link className="btn btn-outline-success me-3" to="/register">Register</Link>
+                                
+                                </>
+                            }
+                            {sessionStorage.getItem('id')!==null &&
+                            <button onClick={LogoutFunc}>Logout</button>
+                            }
                             
                         </div>
                     </div>

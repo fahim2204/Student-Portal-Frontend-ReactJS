@@ -12,6 +12,7 @@ import { Grid, TextField, Paper, Avatar, Button } from '@material-ui/core';
 
 const Login = (props) => {
 
+
     const [uname, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
@@ -21,11 +22,9 @@ const Login = (props) => {
 
     const usernamelInputChangeHandler = event => {
         setUsername(event.target.value);
-        // console.log(uname);
     };
     const passwordInputChangeHandler = event => {
         setPassword(event.target.value);
-        // console.log(password)
     };
     let history = useHistory();
 
@@ -37,18 +36,27 @@ const Login = (props) => {
         try {
             const res = await axios.post(`http://127.0.0.1:8000/api/login`, result);
             console.log(res.data);
-            //    const error = '';
             if (res.data.id == null) {
                 setErrorMsg('Username or Password Invalid')
                 setErrorText(true);
                 console.log(errorText)
             }
             else {
+                //For Session use through all website
+                // localStorage.setItem('id', res.data.id);
+                // localStorage.setItem('token', res.data.token);
+                // localStorage.setItem('uname', res.data.uname);
+                // localStorage.setItem('type', res.data.type);
+                sessionStorage.setItem('id', res.data.id);
+                sessionStorage.setItem('token', res.data.token);
+                sessionStorage.setItem('uname', res.data.uname);
+                sessionStorage.setItem('type', res.data.type);
+              
                 history.push('/')
             }
 
-        } catch (errorMsg) {
-            console.log(errorMsg);
+        } catch (e) {
+            console.log(e);
 
         }
     };
@@ -60,7 +68,7 @@ const Login = (props) => {
     const errorMessageColor = { color: "red", padding: "10px" }
     const regMsgColor = { color: "green", padding: "10px" }
     useEffect(() => {
-        
+
         const search = window.location.search;
         const params = new URLSearchParams(search);
         const foo = params.get('msg');
