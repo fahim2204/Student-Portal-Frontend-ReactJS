@@ -93,12 +93,13 @@ const SinglePost = () => {
                                 <Box color="info.main"><b>post date</b></Box>
                             </Grid>
                             <Grid item xs={1} md={1} lg={4} />
-                            <Grid item xs={12} lg={2}>
-                                <Fab size="small" color="secondary" aria-label="edit">
-                                    <EditIcon />
-                                </Fab>
+                            <Grid item xs={12} md={2} lg={2}>
                                 <IconButton size="small" aria-label="delete" className={classes.margin}>
-                                    <DeleteIcon fontSize="large" />
+                                    <EditIcon />
+                                </IconButton>
+
+                                <IconButton size="small" aria-label="delete" className={classes.margin}>
+                                    <DeleteIcon />
                                 </IconButton>
                             </Grid>
                             <br /><br />
