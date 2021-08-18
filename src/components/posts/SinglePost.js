@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Divider, Fab, Grid, Icon, IconButton, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
+import { Box, Chip,  Fab, Grid, IconButton, makeStyles, Paper, TextField} from '@material-ui/core';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
@@ -10,7 +10,11 @@ import ArrowDownwardOutlinedIcon from '@material-ui/icons/ArrowDownwardOutlined'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import SendIcon from '@material-ui/icons/Send';
+import FaceIcon from '@material-ui/icons/Face';
+
+
 import Comments from './Comments';
+
 
 const useStyles = makeStyles((theme) => ({
 
@@ -86,11 +90,20 @@ const SinglePost = () => {
                             </Grid>
 
                             <Grid item xs={4} md={3} lg={2}>
-                                <Link to="#" style={{ textDecoration: 'none' }}><b>Posted by:<Box color="success.main">@username</Box></b></Link>
+                                <Link to="#" style={{ textDecoration: 'none' }}>
+                                    <Chip
+                                    size="small"
+                                    icon={<FaceIcon />}
+                                    label="username"
+                                    clickable
+                                    color="primary"
+                                    variant="outlined"
+                                />
+                                </Link>
                             </Grid>
 
                             <Grid item xs={4} md={3} lg={2}>
-                                <Box color="info.main"><b>post date</b></Box>
+                                <Box color="success.main"><b>post date</b></Box>
                             </Grid>
                             <Grid item xs={1} md={1} lg={4} />
                             <Grid item xs={12} md={2} lg={2}>
@@ -105,7 +118,7 @@ const SinglePost = () => {
                             <br /><br />
 
                         </Grid>
-
+                        <hr />
                         <Grid item xs={12}>
                             <h2>Post title here</h2>
                         </Grid>
