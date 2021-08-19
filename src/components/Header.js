@@ -14,8 +14,6 @@ import Menu from '@material-ui/core/Menu';
 
 
 
-
-
 const useStyles = makeStyles(() => ({
 
     toolbar: {
@@ -33,7 +31,7 @@ const useStyles = makeStyles(() => ({
 
 
     },
-    
+
 
 }));
 
@@ -46,7 +44,7 @@ const theme = createTheme({
 
 const Header = () => {
 
-
+    const history = new useHistory();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -56,6 +54,11 @@ const Header = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+        sessionStorage.clear();
+        history.push("/login");
     };
 
 
@@ -82,7 +85,7 @@ const Header = () => {
                                         </IconButton>
                                     </Grid>
                                     <Grid xs={8} md={10} lg={8}>
-                                        <TextField size= "small" style={{ width: '90%' }} type="search" variant="outlined" placeholder='Search' />
+                                        <TextField size="small" style={{ width: '90%' }} type="search" variant="outlined" placeholder='Search' />
                                     </Grid>
                                     <Grid xs={1} md={1}>
                                         <IconButton><SearchIcon /></IconButton>
@@ -119,40 +122,40 @@ const Header = () => {
                                 }
                                 {sessionStorage.getItem('uname') !== null &&
 
-                                        <Grid container justify="flex-end" alignItems='center'>
-                                            <Grid style={{ marginRight: "4px" }} item xs={4} sm={3} md={2} lg={1}>
-                                                <IconButton >
-                                                    <NotificationsNoneOutlinedIcon />
-                                                </IconButton>
-                                            </Grid >
-                                            <Grid style={{ marginLeft: "4px" }} item xs={6} sm={4} md={3} lg={2}>
+                                    <Grid container justify="flex-end" alignItems='center'>
+                                        <Grid style={{ marginRight: "4px" }} item xs={4} sm={3} md={2} lg={1}>
+                                            <IconButton >
+                                                <NotificationsNoneOutlinedIcon />
+                                            </IconButton>
+                                        </Grid >
+                                        <Grid style={{ marginLeft: "4px" }} item xs={6} sm={4} md={3} lg={2}>
 
-                                                    <IconButton aria-haspopup="true" onClick={handleProfile}>
-                                                        <PersonOutlineOutlinedIcon />
+                                            <IconButton aria-haspopup="true" onClick={handleProfile}>
+                                                <PersonOutlineOutlinedIcon />
 
-                                                    </IconButton>
-                                                    <Menu
-                                                        id="simple-menu"
-                                                        anchorEl={anchorEl}
-                                                        keepMounted
-                                                        open={Boolean(anchorEl)}
-                                                        onClose={handleClose}
-                                                    >
-                                                        <Link to="/profile/:uname" style={{ textDecoration: 'none' }}>
-                                                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                                        </Link>
-                                                        <Link to="#" style={{ textDecoration: 'none' }}>
-                                                            <MenuItem onClick={handleClose}>Logout</MenuItem>
-                                                        </Link>
+                                            </IconButton>
+                                            <Menu
+                                                id="simple-menu"
+                                                anchorEl={anchorEl}
+                                                keepMounted
+                                                open={Boolean(anchorEl)}
+                                                onClose={handleClose}
+                                            >
+                                                <Link to={`/profile/${sessionStorage.getItem('uname')}`} style={{ textDecoration: 'none' }}>
+                                                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                                                </Link>
+                                                {/* <Link to="#" style={{ textDecoration: 'none' }}> */}
+                                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                                {/* </Link> */}
 
 
-                                                    </Menu>
-                                               
+                                            </Menu>
 
-                                            </Grid>
+
                                         </Grid>
+                                    </Grid>
 
-                                    
+
                                 }
 
                             </Grid>
