@@ -77,8 +77,10 @@ const Edit = () => {
     let { uname } = useParams();
     const [name, setname] = useState("");
 
+    const [oldPassword, setOldPassword] = useState("");
     const [password, setPassword] = useState("");
     const [cpassword, setCpassword] = useState("");
+    const [deletePassword, setDeletePassword] = useState("");
     const [email, setEmail] = useState("");
     const [contact, setContact] = useState("");
     const [address, setAddress] = useState("");
@@ -102,13 +104,7 @@ const Edit = () => {
 
 
     useEffect(() => {
-        const search = window.location.search;
-        const params = new URLSearchParams(search);
-        const foo = params.get('msg');
-        setRegMsg(foo)
-
-
-
+        
         axios.get(`http://127.0.0.1:8000/api/profile/${uname}`)
         .then(res => {
             setname(res.data.profileInfo.name)
@@ -117,6 +113,11 @@ const Edit = () => {
             setAddress(res.data.profileInfo.address)
             setPassword()
         });
+        
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        const foo = params.get('msg');
+        setRegMsg(foo)
 
     }, [])
 
@@ -124,11 +125,17 @@ const Edit = () => {
     const nameInputChangeHandler = event => {
         setname(event.target.value);
     };
+    const oldPasswordInputChangeHandler = event => {
+        setOldPassword(event.target.value);
+    };
     const passwordInputChangeHandler = event => {
         setPassword(event.target.value);
     };
     const confirmPasswordInputChangeHandler = event => {
         setCpassword(event.target.value);
+    };
+    const confirmPasswordDeleteHandler = event => {
+        setDeletePassword(event.target.value);
     };
     const emailInputChangeHandler = (event) => {
         setEmail(event.target.value);
@@ -143,7 +150,7 @@ const Edit = () => {
     let history = useHistory();
 
 
-    const formSubmissionHandlerBasic = (event) => {
+    const formSubmissionHandlerBasic = async (event) => {
         event.preventDefault();
 
         let formData = new FormData()
@@ -187,17 +194,20 @@ const Edit = () => {
 
             setEmailValidationText(false)
             setEmailValidation("")
-
             setAddressValidation("")
             setAddressValidationText(false)
             setContactValidation("")
             setContactValidationText(false)
-
             setNameValidation("")
             setNameValidationText(false)
 
-
-            history.push("/profile/view?msg=Update%20Success")
+            try {
+                await axios.post(`http://127.0.0.1:8000/api/profile/basic/${uname}`, formData);
+            } catch (error) {
+                console.log(error);
+            }
+            history.push(`/profile/${uname}`)
+            // history.push(`/profile/${uname}?msg=Update%20Success`)
         }
 
     };
@@ -205,13 +215,13 @@ const Edit = () => {
 
 
 
-    const formSubmissionHandlerPassword = (event) => {
+    const formSubmissionHandlerPassword = async (event) => {
         event.preventDefault();
 
         let formData = new FormData()
-
+        formData.append('oldPassword', oldPassword)
         formData.append('password', password)
-        formData.append('cpassword', cpassword)
+        formData.append('cPassword', cpassword)
 
 
         if (password === "" || cpassword === "" || password !== cpassword) {
@@ -237,12 +247,27 @@ const Edit = () => {
             setCpasswordValidationText(false)
             setPasswordValidation("")
             setPasswordValidationText(false)
-            history.push("/profile/view?msg=Password%20Changed")
+
+            try {
+                await axios.post(`http://127.0.0.1:8000/api/profile/password/${uname}`, formData);
+            } catch (error) {
+                console.log(error);
+            }
+
+            // history.push("/profile/view?msg=Password%20Changed")
         }
 
     };
 
-
+     const DeleteAccountHandler = ()=>{
+        let formData = new FormData()
+        formData.append('deletePassword', deletePassword)
+        try {
+            axios.delete(`http://127.0.0.1:8000/api/profile/${uname}`, formData);
+        } catch (error) {
+            console.log(error);
+        }
+     }
 
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
@@ -349,7 +374,7 @@ const Edit = () => {
 
 
                         </form>
-{/* <span style={regMsgColor}><b>{regMsg}</b></span> */}
+                        <span style={regMsgColor}><b>{regMsg}</b></span>
 
                     </Grid>
                 </TabPanel>
@@ -370,6 +395,7 @@ const Edit = () => {
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
                                     }}
+                                    onChange={oldPasswordInputChangeHandler}
                                 />
                             </Grid>
                             <br />
@@ -434,6 +460,7 @@ const Edit = () => {
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
                                     }}
+                                    onChange={confirmPasswordDeleteHandler}
                                 />
                             </Grid>
                             <br />
@@ -446,10 +473,11 @@ const Edit = () => {
                                 <Button type='submit' variant="contained"
                                     color="secondary"
                                     className={classes.button}
+                                    onClick={()=>DeleteAccountHandler()}
                                     startIcon={<DeleteIcon />} size="large">Delete</Button>
                             </Grid>
                         </form>
- {/* <span style={regMsgColor}><b>{regMsg}</b></span> */}
+                        {/* <span style={regMsgColor}><b>{regMsg}</b></span> */}
                     </Grid>
                 </TabPanel>
 
