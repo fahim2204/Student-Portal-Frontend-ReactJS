@@ -84,7 +84,11 @@ const Edit = () => {
     const [email, setEmail] = useState("");
     const [contact, setContact] = useState("");
     const [address, setAddress] = useState("");
-
+    const [passErrMsg, setPassErrMsg] = useState("");
+    const [passErr, setPassErr] = useState(false);
+    const [accDltMsg, setAccDltMsg] = useState("");
+    const [accDlt, setAccDlt] = useState(false);
+    const [successMesssege, setSucceessMessege] = useState("");
 
 
     const [nameValidation, setNameValidation] = useState("");
@@ -104,16 +108,16 @@ const Edit = () => {
 
 
     useEffect(() => {
-        
+
         axios.get(`http://127.0.0.1:8000/api/profile/${uname}`)
-        .then(res => {
-            setname(res.data.profileInfo.name)
-            setEmail(res.data.profileInfo.email)
-            setContact(res.data.profileInfo.contact)
-            setAddress(res.data.profileInfo.address)
-            setPassword()
-        });
-        
+            .then(res => {
+                setname(res.data.profileInfo.name)
+                setEmail(res.data.profileInfo.email)
+                setContact(res.data.profileInfo.contact)
+                setAddress(res.data.profileInfo.address)
+                setPassword()
+            });
+
         const search = window.location.search;
         const params = new URLSearchParams(search);
         const foo = params.get('msg');
@@ -215,8 +219,8 @@ const Edit = () => {
 
 
 
-    const formSubmissionHandlerPassword = async (event) => {
-        event.preventDefault();
+    const formSubmissionHandlerPassword = () => {
+
 
         let formData = new FormData()
         formData.append('oldPassword', oldPassword)
@@ -247,27 +251,54 @@ const Edit = () => {
             setCpasswordValidationText(false)
             setPasswordValidation("")
             setPasswordValidationText(false)
+            setPassErrMsg("")
+            setPassErr(false)
+            setSucceessMessege("")
 
-            try {
-                await axios.post(`http://127.0.0.1:8000/api/profile/password/${uname}`, formData);
-            } catch (error) {
-                console.log(error);
-            }
+            axios.post(`http://127.0.0.1:8000/api/profile/password/${uname}`, formData)
+                .then(res => {
+                    console.log(res.data.error)
+                    if (res.data.error === "Old Password is Incorrect") {
+                        setPassErrMsg("Old password doesn't match");
+                        setPassErr(true);
+                    }
+                    else {
+                        setSucceessMessege("Password Change Succesfull");
+                    }
+
+                })
 
             // history.push("/profile/view?msg=Password%20Changed")
         }
 
     };
 
-     const DeleteAccountHandler = ()=>{
+
+    const DeleteAccountHandler = (event) => {
+        event.preventDefault();
+        setAccDlt(false);
+        setAccDltMsg("");
         let formData = new FormData()
         formData.append('deletePassword', deletePassword)
-        try {
-            axios.delete(`http://127.0.0.1:8000/api/profile/${uname}`, formData);
-        } catch (error) {
-            console.log(error);
-        }
-     }
+        // try {
+        axios.delete(`http://127.0.0.1:8000/api/profile/${uname}`, formData)
+            .then(res => {
+                console.log(res.data.error);
+                console.log(formData);
+                if (res.data.error === "Enter a Password") {
+                    setAccDlt(true);
+                    setAccDltMsg("Incorrect Password!!!");
+                }
+                else {
+                    history.push("/login?msg=Account%20Deleted")
+                    sessionStorage.clear();
+
+                }
+            })
+        // } catch (error) {
+        // console.log(error);
+        // }
+    }
 
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
@@ -390,6 +421,7 @@ const Edit = () => {
                             <Grid item xs={12}>
                                 <TextField
                                     label="Old Password"
+                                    error={passErr}
                                     type="password"
                                     variant="outlined"
                                     InputProps={{
@@ -435,6 +467,15 @@ const Edit = () => {
                             >
                                 <Button type='submit' variant='contained' color='primary' size="large">Update</Button>
                             </Grid>
+                            <Grid
+                                container
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <span style={{ color: 'red', padding: '5px' }}><b>{passErrMsg}</b></span>
+                                <span style={regMsgColor}><b>{successMesssege}</b></span>
+                            </Grid>
 
 
 
@@ -451,9 +492,10 @@ const Edit = () => {
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <form className="submit">
+                        <form className="submit" onSubmit={DeleteAccountHandler}>
                             <Grid item xs={12}>
                                 <TextField
+                                    error={accDlt}
                                     label="Confirm Password"
                                     type="password"
                                     variant="outlined"
@@ -473,11 +515,19 @@ const Edit = () => {
                                 <Button type='submit' variant="contained"
                                     color="secondary"
                                     className={classes.button}
-                                    onClick={()=>DeleteAccountHandler()}
+                                    // onClick={()=>DeleteAccountHandler()}
                                     startIcon={<DeleteIcon />} size="large">Delete</Button>
                             </Grid>
+                            <Grid
+                                container
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <span style={{ color: 'red', padding: '5px' }}><b>{accDltMsg}</b></span>
+                            </Grid>
                         </form>
-                        {/* <span style={regMsgColor}><b>{regMsg}</b></span> */}
+
                     </Grid>
                 </TabPanel>
 
