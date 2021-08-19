@@ -68,7 +68,7 @@ const Header = () => {
     return (
         <div>
             <Container maxWidth="xl">
-                <AppBar color='transparent' position='static' alignItems='center' justifyContent='center'>
+                <AppBar color='transparent' position='static' alignItems='center' justifyContent='center' elevation={0}>
                     {/* <Paper elevation={1}> */}
                     <Toolbar className={classes.toolbar} >
                         <Grid container spacing={3} alignItems='center' justifyContent='center' >
