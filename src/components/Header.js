@@ -119,19 +119,14 @@ const Header = () => {
                                 }
                                 {sessionStorage.getItem('uname') !== null &&
 
-                                    <>
-
-
                                         <Grid container justify="flex-end" alignItems='center'>
                                             <Grid style={{ marginRight: "4px" }} item xs={4} sm={3} md={2} lg={1}>
                                                 <IconButton >
                                                     <NotificationsNoneOutlinedIcon />
                                                 </IconButton>
                                             </Grid >
-                                            <Grid style={{ marginLeft: "4px" }} item xs={4} sm={3} md={2} lg={1}>
+                                            <Grid style={{ marginLeft: "4px" }} item xs={6} sm={4} md={3} lg={2}>
 
-
-                                                {/* <div> */}
                                                     <IconButton aria-haspopup="true" onClick={handleProfile}>
                                                         <PersonOutlineOutlinedIcon />
 
@@ -152,68 +147,12 @@ const Header = () => {
 
 
                                                     </Menu>
-                                                    {/* <div> */}
-                                                        {/* <Typography variant="body2">
-                                                            username
-                                                        </Typography> */}
-                                                    {/* </div> */}
-                                                    {/* <div> */}
-                                                        {/* <Typography variant="caption">
-                                                            usertype
-                                                        </Typography> */}
-                                                    {/* </div> */}
-                                                {/* </div> */}
-
+                                               
 
                                             </Grid>
                                         </Grid>
 
-
-
-
-
-                                        {/* dgsd */}
-                                        {/* <Grid container spacing={1} alignItems='center' justifyContent='center'>
-                                            <Grid item xs>
-                                                <IconButton >
-                                                    <NotificationsNoneOutlinedIcon />
-                                                </IconButton>
-                                            </Grid>
-                                            <div>
-                                                <IconButton aria-haspopup="true" onClick={handleProfile}>
-                                                    <PersonOutlineOutlinedIcon />
-
-                                                </IconButton>
-                                                <Menu
-                                                    id="simple-menu"
-                                                    anchorEl={anchorEl}
-                                                    keepMounted
-                                                    open={Boolean(anchorEl)}
-                                                    onClose={handleClose}
-                                                >
-                                                    <Link to="/profile/view" style={{ textDecoration: 'none' }}>
-                                                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                                    </Link>
-                                                    <Link to="#" style={{ textDecoration: 'none' }}>
-                                                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                                                    </Link>
-
-
-                                                </Menu>
-                                                <div>
-                                                    <Typography variant="body2">
-                                                        username
-                                                    </Typography>
-                                                </div>
-                                                <div>
-                                                    <Typography variant="caption">
-                                                        usertype
-                                                    </Typography>
-                                                </div>
-                                            </div>
-
-                                        </Grid> */}
-                                    </>
+                                    
                                 }
 
                             </Grid>
