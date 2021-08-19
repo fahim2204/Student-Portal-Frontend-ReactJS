@@ -38,7 +38,7 @@ function App() {
           <Route exact path="/profile/:uname">
               <View/>
           </Route>
-          <Route exact path="/profile/edit">
+          <Route exact path="/profile/:uname/edit">
               <Edit/>
           </Route>
           <Route exact path="/posts/create">

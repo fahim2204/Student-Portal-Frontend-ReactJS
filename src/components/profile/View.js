@@ -50,13 +50,7 @@ const View = (props) => {
     let [profile, setProfile] = useState([]);
     let [loading, setLoading] = useState(true);
 
-
     const [ownPosts, setownPosts] = useState([]);
-
-    const regMsgColor = { color: "green", padding: "10px" }
-    const [regMsg, setRegMsg] = useState("");
-
-
 
     const getProfileData = () => {
 
@@ -74,18 +68,8 @@ const View = (props) => {
 
     }, [])
 
-    console.log(profile.posts);
-
-
     const classes = useStyles();
-    
-
     const [showOwnPost, setShowOwnPost] = useState(false);
-   
-
-    let imageName = require('./img.jpg')
-
-
 
     const toggleOwnPostHandler = () => {
 
@@ -112,8 +96,6 @@ const View = (props) => {
             </div>
         );
     }
-
-
     return (
         <>
             <div style={LoadinAnimeStyle}>
@@ -131,16 +113,7 @@ const View = (props) => {
                     <CssBaseline />
                     <Grid item xs={12}>
                         <Container>
-
-
-                            {/* <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                > */}
                             <div className={classes.root}>
-
                                 <Grid container spacing={3} >
                                     <Grid item xs={12} sm={4} md={4}>
                                         <Card >
@@ -149,13 +122,16 @@ const View = (props) => {
                                                     <Grid item xs={12}>
                                                         <Box display="flex" justifyContent="center">
                                                             <Box borderRadius="50%" className={classes.imgBorder} >
-                                                                <img src={imageName.default} style={{
-                                                                    alignSelf: 'center',
-                                                                    height: 150,
-                                                                    width: 150,
-                                                                    borderWidth: 1,
-                                                                    borderRadius: 75,
-                                                                }} />
+                                                                <img
+                                                                    src={`http://127.0.0.1:8000/upload/${profile.profileInfo.image}`}
+                                                                    alt={`Profile-img`}
+                                                                    style={{
+                                                                        alignSelf: 'center',
+                                                                        height: 150,
+                                                                        width: 150,
+                                                                        borderWidth: 1,
+                                                                        borderRadius: 75,
+                                                                    }} />
                                                             </Box>
                                                         </Box>
                                                     </Grid>
@@ -163,20 +139,15 @@ const View = (props) => {
                                                         <h2 className={classes.username}>@{profile.user.uname}</h2>
                                                         <h4 className={classes.username}>{profile.user.type}</h4>
                                                     </Grid>
-
-                                                    <Grid item xs={12} className={classes.username}>
-                                                        <Link to="/profile/edit">
-                                                            <Fab >
-
-                                                                <EditIcon />
-
-                                                            </Fab>
-                                                        </Link>
-
-                                                    </Grid>
-                                                    <Grid item xs={12} className={classes.username}>
-                                                        <span style={regMsgColor} ><b>{regMsg}</b></span>
-                                                    </Grid>
+                                                    {sessionStorage.getItem('uname') === uname &&
+                                                        <Grid item xs={12} className={classes.username}>
+                                                            <Link to={`/profile/${uname}/edit`}>
+                                                                <Fab >
+                                                                    <EditIcon />
+                                                                </Fab>
+                                                            </Link>
+                                                        </Grid>
+                                                    }
 
                                                 </Grid>
                                             </CardContent>
@@ -191,10 +162,7 @@ const View = (props) => {
                                                     </Grid>
                                                     <Grid item xs={8} sm={9} lg={10}>
                                                         <Paper className={classes.paper}>
-                                                            {profile.user.type === 'moderator' ? profile.user.moderator.name : ""}
-                                                            {profile.user.type === 'studuent' ? profile.user.studuent.name : ""}
-                                                            {profile.user.type === 'admin' ? profile.user.admin.name : ""}
-                                                            {profile.user.type === 'instructor' ? profile.user.instructor.name : ""}
+                                                            {profile.profileInfo.name}
                                                         </Paper>
                                                     </Grid>
                                                     <Grid item xs={4} sm={3} lg={2}>
@@ -202,10 +170,7 @@ const View = (props) => {
                                                     </Grid>
                                                     <Grid item xs={8} sm={9} lg={10}>
                                                         <Paper className={classes.paper}>
-                                                            {profile.user.type === 'moderator' ? profile.user.moderator.email : ""}
-                                                            {profile.user.type === 'studuent' ? profile.user.studuent.email : ""}
-                                                            {profile.user.type === 'admin' ? profile.user.admin.email : ""}
-                                                            {profile.user.type === 'instructor' ? profile.user.instructor.email : ""}
+                                                            {profile.profileInfo.email}
                                                         </Paper>
                                                     </Grid>
                                                     <Grid item xs={4} sm={3} lg={2}>
@@ -213,10 +178,7 @@ const View = (props) => {
                                                     </Grid>
                                                     <Grid item xs={8} sm={9} lg={10}>
                                                         <Paper className={classes.paper}>
-                                                            {profile.user.type==='moderator' ? profile.user.moderator.contact:""}
-                                                        {profile.user.type==='studuent' ? profile.user.studuent.contact:""}
-                                                        {profile.user.type==='admin' ? profile.user.admin.contact:""}
-                                                        {profile.user.type==='instructor' ? profile.user.instructor.contact:""}
+                                                            {profile.profileInfo.contact}
                                                         </Paper>
                                                     </Grid>
                                                     <Grid item xs={4} sm={3} lg={2}>
@@ -224,10 +186,7 @@ const View = (props) => {
                                                     </Grid>
                                                     <Grid item xs={8} sm={9} lg={10}>
                                                         <Paper className={classes.paper}>
-                                                        {profile.user.type==='moderator' ? profile.user.moderator.address:""}
-                                                        {profile.user.type==='studuent' ? profile.user.studuent.address:""}
-                                                        {profile.user.type==='admin' ? profile.user.admin.address:""}
-                                                        {profile.user.type==='instructor' ? profile.user.instructor.address:""}
+                                                            {profile.profileInfo.address}
                                                         </Paper>
                                                     </Grid>
                                                 </Grid>
@@ -235,13 +194,11 @@ const View = (props) => {
                                             </CardContent>
                                         </Card>
                                         <Grid>
-
                                             <Card className={classes.margin} color="primary">
-
                                                 <CardContent >
                                                     <Grid container spacing={3}>
                                                         <Button className={classes.margin} onClick={toggleOwnPostHandler} variant="contained" color="primary">
-                                                            Toggle Own Post
+                                                            Toggle {uname}'s Post
                                                         </Button>
                                                     </Grid>
                                                     {
@@ -256,16 +213,9 @@ const View = (props) => {
                             </div>
                         </Container>
                     </Grid>
-
                 </div>
-
-
-
-
             </>}
-
         </>
-
     )
 }
 

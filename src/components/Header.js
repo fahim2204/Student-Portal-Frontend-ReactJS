@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 const Header = () => {
     let history = useHistory();
     const LogoutFunc = ()=>{
-        localStorage.clear();
+        sessionStorage.clear();
         history.push('/login');
         console.log("history pushed");
     }
