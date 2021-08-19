@@ -10,6 +10,7 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
 import View from './components/profile/View';
 import Edit from './components/profile/Edit';
 import CreatePosts from './components/posts/CreatePosts';
+import SinglePost from './components/posts/SinglePost';
 
 function App() {
   return (
@@ -42,6 +43,9 @@ function App() {
           </Route>
           <Route exact path="/posts/create">
               <CreatePosts/>
+          </Route>
+          <Route exact path="/posts/id">
+              <SinglePost/>
           </Route>
         </Switch>
       </Router>
