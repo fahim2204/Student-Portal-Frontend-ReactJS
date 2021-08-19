@@ -1,15 +1,13 @@
 
-import { AppBar, Box, Grid, IconButton, Toolbar, Paper, TextField, Typography, Button, makeStyles, createTheme, ThemeProvider, MenuItem } from '@material-ui/core';
+import { AppBar, Box, Grid, IconButton, Toolbar, Paper, TextField, Typography, Button, makeStyles, createTheme, ThemeProvider, MenuItem, Container } from '@material-ui/core';
 import * as React from 'react';
 
 import { Link, useHistory } from "react-router-dom";
-
 
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { blue, green } from '@material-ui/core/colors';
 import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneOutlined';
-import { Link } from 'react-router-dom';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import Menu from '@material-ui/core/Menu';
 
@@ -17,14 +15,13 @@ import Menu from '@material-ui/core/Menu';
 
 
 
+
 const useStyles = makeStyles(() => ({
-
-
 
     toolbar: {
         textAlign: "center",
-
-
+        height:"60px",
+        marginBottom:"15px"
     },
     btn: {
         textAlign: "center",
@@ -64,7 +61,8 @@ const Header = () => {
 
     return (
         <div>
-            <Box sx={{ flexGrow: 1 }}>
+            <Container maxWidth="xl">
+                <Paper elevation={1}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton
                         size="large"
@@ -76,7 +74,7 @@ const Header = () => {
                     </IconButton>
                     <Grid container spacing={3} alignItems='center' justifyContent='center' flexGrow='1'>
                         <Grid item xs>
-                            <TextField style={{ width: '50%' }} type="search" variant="outlined" placeholder='Search' />
+                            <TextField style={{ width: '90%' }} type="search" variant="outlined" placeholder='Search' />
                             <IconButton><SearchIcon /></IconButton>
                         </Grid>
                         <Grid item xs={5} lg={8}>
@@ -85,12 +83,8 @@ const Header = () => {
 
                         </Grid>
                         <Grid item xs>
-
-
-                            {/* if not logged in then this part from*/}
-
-
-                            {/* <ThemeProvider theme={theme}>
+                            {sessionStorage.getItem('uname') === null &&
+                            <ThemeProvider theme={theme}>
                                 <Link to="/login" style={{ textDecoration: 'none' }}>
                                     <Button variant="outlined" color="secondary" className={classes.btn}>
                                         Login
@@ -101,15 +95,11 @@ const Header = () => {
                                         Register
                                     </Button>
                                 </Link>
-                            </ThemeProvider> */}
-
-
-                            {/* if not logged in then this part to this*/}
-
-
-                            {/* if logged in then this part from this*/}
-
-
+                            </ThemeProvider>
+                                                  
+                            }
+                            {sessionStorage.getItem('uname') !== null &&
+                           
 
                             <Grid container spacing={0} alignItems='center' justifyContent='center'>
                                 <Grid item xs>
@@ -151,9 +141,8 @@ const Header = () => {
                                 </div>
 
                             </Grid>
-
-                            {/* if logged in then this part to this*/}
-
+                                                       
+                            }
 
                         </Grid>
 
@@ -163,8 +152,10 @@ const Header = () => {
 
 
                 </Toolbar>
-                <hr />
-            </Box>
+                </Paper>
+            </Container>
+        
+           
 
         </div >
 

@@ -1,25 +1,23 @@
 import Header from './Header';
 import Footer from './Footer';
+import Container from '@material-ui/core/Container'
 
 
 const Home = ()=>{
-    // console.log(Cookies.get('id'));
-    // console.log(Cookies.get('token'));
-    // console.log(Cookies.get('uname'));
     return(
     <>
         <Header/>
-        <div className="container">
-        Home body
+        <Container maxWidth="xl">
+        
+            { sessionStorage.getItem('uname')}
+            { sessionStorage.getItem('type')}
+            { sessionStorage.getItem('token')}
+            { sessionStorage.getItem('id')}
+            
+          
+        </Container>
        
-   
-     { sessionStorage.getItem('uname')}
-     { sessionStorage.getItem('type')}
-     { sessionStorage.getItem('token')}
-     { sessionStorage.getItem('id')}
-    
      
-        </div>
         <Footer/>
     </>
     );
