@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { Button, Grid, InputAdornment, TextField } from '@material-ui/core';
+import { Button, Grid, InputAdornment, TextField, Container } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import axios from 'axios';
@@ -15,6 +15,7 @@ import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import PhoneIcon from '@material-ui/icons/Phone';
 import ContactMailOutlinedIcon from '@material-ui/icons/ContactMailOutlined';
 import { useHistory, useParams } from 'react-router-dom';
+import Header from './../Header';
 
 function TabPanel(props) {
 
@@ -77,12 +78,18 @@ const Edit = () => {
     let { uname } = useParams();
     const [name, setname] = useState("");
 
+    const [oldPassword, setOldPassword] = useState("");
     const [password, setPassword] = useState("");
     const [cpassword, setCpassword] = useState("");
+    const [deletePassword, setDeletePassword] = useState("");
     const [email, setEmail] = useState("");
     const [contact, setContact] = useState("");
     const [address, setAddress] = useState("");
-
+    const [passErrMsg, setPassErrMsg] = useState("");
+    const [passErr, setPassErr] = useState(false);
+    const [accDltMsg, setAccDltMsg] = useState("");
+    const [accDlt, setAccDlt] = useState(false);
+    const [successMesssege, setSucceessMessege] = useState("");
 
 
     const [nameValidation, setNameValidation] = useState("");
@@ -102,21 +109,19 @@ const Edit = () => {
 
 
     useEffect(() => {
+
+        axios.get(`http://127.0.0.1:8000/api/profile/${uname}`)
+            .then(res => {
+                setname(res.data.profileInfo !== null ? res.data.profileInfo.name : 'UNKNOWN')
+                setEmail(res.data.profileInfo !== null ? res.data.profileInfo.email : 'UNKNOWN')
+                setContact(res.data.profileInfo !== null ? res.data.profileInfo.contact : 'UNKNOWN')
+                setAddress(res.data.profileInfo !== null ? res.data.profileInfo.address : 'UNKNOWN')
+            });
+
         const search = window.location.search;
         const params = new URLSearchParams(search);
         const foo = params.get('msg');
         setRegMsg(foo)
-
-
-
-        axios.get(`http://127.0.0.1:8000/api/profile/${uname}`)
-        .then(res => {
-            setname(res.data.profileInfo.name)
-            setEmail(res.data.profileInfo.email)
-            setContact(res.data.profileInfo.contact)
-            setAddress(res.data.profileInfo.address)
-            setPassword()
-        });
 
     }, [])
 
@@ -124,11 +129,17 @@ const Edit = () => {
     const nameInputChangeHandler = event => {
         setname(event.target.value);
     };
+    const oldPasswordInputChangeHandler = event => {
+        setOldPassword(event.target.value);
+    };
     const passwordInputChangeHandler = event => {
         setPassword(event.target.value);
     };
     const confirmPasswordInputChangeHandler = event => {
         setCpassword(event.target.value);
+    };
+    const confirmPasswordDeleteHandler = event => {
+        setDeletePassword(event.target.value);
     };
     const emailInputChangeHandler = (event) => {
         setEmail(event.target.value);
@@ -143,7 +154,7 @@ const Edit = () => {
     let history = useHistory();
 
 
-    const formSubmissionHandlerBasic = (event) => {
+    const formSubmissionHandlerBasic = async (event) => {
         event.preventDefault();
 
         let formData = new FormData()
@@ -187,17 +198,20 @@ const Edit = () => {
 
             setEmailValidationText(false)
             setEmailValidation("")
-
             setAddressValidation("")
             setAddressValidationText(false)
             setContactValidation("")
             setContactValidationText(false)
-
             setNameValidation("")
             setNameValidationText(false)
 
-
-            history.push("/profile/view?msg=Update%20Success")
+            try {
+                await axios.post(`http://127.0.0.1:8000/api/profile/basic/${uname}`, formData);
+            } catch (error) {
+                console.log(error);
+            }
+            history.push(`/profile/${uname}`)
+            // history.push(`/profile/${uname}?msg=Update%20Success`)
         }
 
     };
@@ -205,13 +219,11 @@ const Edit = () => {
 
 
 
-    const formSubmissionHandlerPassword = (event) => {
-        event.preventDefault();
-
+    const formSubmissionHandlerPassword = () => {
         let formData = new FormData()
-
+        formData.append('oldPassword', oldPassword)
         formData.append('password', password)
-        formData.append('cpassword', cpassword)
+        formData.append('cPassword', cpassword)
 
 
         if (password === "" || cpassword === "" || password !== cpassword) {
@@ -237,12 +249,54 @@ const Edit = () => {
             setCpasswordValidationText(false)
             setPasswordValidation("")
             setPasswordValidationText(false)
-            history.push("/profile/view?msg=Password%20Changed")
+            setPassErrMsg("")
+            setPassErr(false)
+            setSucceessMessege("")
+
+            axios.post(`http://127.0.0.1:8000/api/profile/password/${uname}`, formData)
+                .then(res => {
+                    console.log(res.data.error)
+                    if (res.data.error === "Old Password is Incorrect") {
+                        setPassErrMsg("Old password doesn't match");
+                        setPassErr(true);
+                    }
+                    else {
+                        setSucceessMessege("Password Change Succesfull");
+                    }
+
+                })
+
+            // history.push("/profile/view?msg=Password%20Changed")
         }
 
     };
 
 
+    const DeleteAccountHandler = (event) => {
+        event.preventDefault();
+        setAccDlt(false);
+        setAccDltMsg("");
+
+
+        axios.delete(`http://127.0.0.1:8000/api/profile/${uname}`, { data: { deletePassword: deletePassword } })
+            .then(res => {
+                console.log(res.data.error);
+                if (res.data.error === "Enter a Password") {
+                    setAccDlt(true);
+                    setAccDltMsg("Enter a Password");
+                }
+                else if (res.data.error === "Password is Incorrect") {
+                    setAccDlt(true);
+                    setAccDltMsg("Password is Incorrect");
+                }
+                else {
+                    history.push("/login?msg=Account%20Deleted")
+                    sessionStorage.clear();
+
+                }
+            })
+
+    }
 
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
@@ -252,209 +306,232 @@ const Edit = () => {
     };
 
     return (
-        <div>
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Tabs
-                        variant="fullWidth"
-                        value={value}
-                        onChange={handleChange}
-                        aria-label="nav tabs example"
-                    >
-                        <LinkTab label="Basic Info" href="/drafts" {...a11yProps(0)} />
-                        <LinkTab label="Password" href="/trash" {...a11yProps(1)} />
-                        <LinkTab label="Delete Account" href="/spam" {...a11yProps(2)} />
-                    </Tabs>
-                </AppBar>
+        <>
+            <Header />
+            <Container maxWidth="lg">
 
-                <TabPanel value={value} index={0}>
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <form className="submit" onSubmit={formSubmissionHandlerBasic}>
+                <div className={classes.root}>
+                    <AppBar position="static">
+                        <Tabs
+                            variant="fullWidth"
+                            value={value}
+                            onChange={handleChange}
+                            aria-label="nav tabs example"
+                        >
+                            <LinkTab label="Basic Info" href="/drafts" {...a11yProps(0)} />
+                            <LinkTab label="Password" href="/trash" {...a11yProps(1)} />
+                            <LinkTab label="Delete Account" href="/spam" {...a11yProps(2)} />
+                        </Tabs>
+                    </AppBar>
 
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={nameValidationText}
-                                    value={name}
-                                    label="Full Name"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><PersonIcon /></InputAdornment>,
-                                    }}
-                                    onChange={nameInputChangeHandler}
-                                    helperText={nameValidation}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid item xs={12}>
-                                <TextField
+                    <TabPanel value={value} index={0}>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <form className="submit" onSubmit={formSubmissionHandlerBasic}>
 
-                                    error={emailValidationText}
-                                    value={email}
-                                    label="Email"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><EmailOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={emailInputChangeHandler}
-                                    helperText={emailValidation}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={contactValidationText}
-                                    value={contact}
-                                    label="Contact No."
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><PhoneIcon /></InputAdornment>,
-                                    }}
-                                    onChange={contactInputChangeHandler}
-                                    helperText={contactValidation}
-                                />
-                            </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={nameValidationText}
+                                        value={name}
+                                        label="Full Name"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><PersonIcon /></InputAdornment>,
+                                        }}
+                                        onChange={nameInputChangeHandler}
+                                        helperText={nameValidation}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid item xs={12}>
+                                    <TextField
 
-                            <br />
+                                        error={emailValidationText}
+                                        value={email}
+                                        label="Email"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><EmailOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={emailInputChangeHandler}
+                                        helperText={emailValidation}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={contactValidationText}
+                                        value={contact}
+                                        label="Contact No."
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><PhoneIcon /></InputAdornment>,
+                                        }}
+                                        onChange={contactInputChangeHandler}
+                                        helperText={contactValidation}
+                                    />
+                                </Grid>
 
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={addressValidationText}
-                                    value={address}
-                                    label="Address"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><ContactMailOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={addressInputChangeHandler}
-                                    helperText={addressValidation}
-                                />
-                            </Grid>
+                                <br />
 
-
-                            <br />
-
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <Button type='submit' variant='contained' color='primary' size="large">Update</Button>
-                            </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={addressValidationText}
+                                        value={address}
+                                        label="Address"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><ContactMailOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={addressInputChangeHandler}
+                                        helperText={addressValidation}
+                                    />
+                                </Grid>
 
 
-                        </form>
-{/* <span style={regMsgColor}><b>{regMsg}</b></span> */}
+                                <br />
 
-                    </Grid>
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <form className="submit" onSubmit={formSubmissionHandlerPassword}>
-
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Old Password"
-                                    type="password"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
-                                    }}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={passwordValidationText}
-                                    label="New Password"
-                                    type="password"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={passwordInputChangeHandler}
-                                    helperText={passwordValidation}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={cpasswordValidationText}
-                                    label="Confirm New Password"
-                                    type="password"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={confirmPasswordInputChangeHandler}
-                                    helperText={cpasswordValidation}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <Button type='submit' variant='contained' color='primary' size="large">Update</Button>
-                            </Grid>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <Button type='submit' variant='contained' color='primary' size="large">Update</Button>
+                                </Grid>
 
 
+                            </form>
+                            <span style={regMsgColor}><b>{regMsg}</b></span>
 
-                        </form>
-                    </Grid>
-                </TabPanel>
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <form className="submit" onSubmit={formSubmissionHandlerPassword}>
 
-                {/* panel 3 */}
+                                <Grid item xs={12}>
+                                    <TextField
+                                        label="Old Password"
+                                        error={passErr}
+                                        type="password"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={oldPasswordInputChangeHandler}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={passwordValidationText}
+                                        label="New Password"
+                                        type="password"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={passwordInputChangeHandler}
+                                        helperText={passwordValidation}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={cpasswordValidationText}
+                                        label="Confirm New Password"
+                                        type="password"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={confirmPasswordInputChangeHandler}
+                                        helperText={cpasswordValidation}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <Button type='submit' variant='contained' color='primary' size="large">Update</Button>
+                                </Grid>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <span style={{ color: 'red', padding: '5px' }}><b>{passErrMsg}</b></span>
+                                    <span style={regMsgColor}><b>{successMesssege}</b></span>
+                                </Grid>
 
-                <TabPanel value={value} index={2}>
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <form className="submit">
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Confirm Password"
-                                    type="password"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
-                                    }}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <Button type='submit' variant="contained"
-                                    color="secondary"
-                                    className={classes.button}
-                                    startIcon={<DeleteIcon />} size="large">Delete</Button>
-                            </Grid>
-                        </form>
- {/* <span style={regMsgColor}><b>{regMsg}</b></span> */}
-                    </Grid>
-                </TabPanel>
 
-            </div>
-        </div>
+
+                            </form>
+                        </Grid>
+                    </TabPanel>
+
+                    {/* panel 3 */}
+
+                    <TabPanel value={value} index={2}>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <form className="submit" onSubmit={DeleteAccountHandler}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={accDlt}
+                                        label="Confirm Password"
+                                        type="password"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={confirmPasswordDeleteHandler}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <Button type='submit' variant="contained"
+                                        color="secondary"
+                                        className={classes.button}
+                                        startIcon={<DeleteIcon />} size="large">Delete</Button>
+                                </Grid>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <span style={{ color: 'red', padding: '5px' }}><b>{accDltMsg}</b></span>
+                                </Grid>
+                            </form>
+                        </Grid>
+                    </TabPanel>
+                </div>
+            </Container>
+        </>
     )
 }
 

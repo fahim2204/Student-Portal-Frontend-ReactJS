@@ -20,8 +20,8 @@ const useStyles = makeStyles(() => ({
         textAlign: "center",
         height: "60px",
         padding: "5px",
-        justifyContent: 'center'
-    },
+        justifyContent: 'center'   
+     },
     btn: {
         textAlign: "center",
         margin: "1%",
