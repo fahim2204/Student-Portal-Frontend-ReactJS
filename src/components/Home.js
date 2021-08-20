@@ -1,8 +1,11 @@
 import Header from './Header';
 import Footer from './Footer';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 import Container from '@material-ui/core/Container'
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 // import HomeCarousel from './HomeCarousel';
+// import { Helmet } from 'react-helmet'
 import Fade from 'react-reveal/Fade';
 import img from './img.png';
 import card1 from './card1.jpg'
@@ -11,23 +14,56 @@ import Pulse from 'react-reveal/Pulse';
 import AboutUs from './AboutUs';
 import SinglePost from './posts/SinglePost';
 import AllPosts from './posts/AllPosts';
+
 import { useEffect, useState } from 'react';
 import { Alert } from '@material-ui/lab';
 import Flash from 'react-reveal/Flash';
+
+import { css } from "@emotion/react";
+import { ClipLoader, HashLoader } from "react-spinners";
 
 const useStyles = makeStyles({
     card: {
         width: "100%",
         marginTop: "40px",
-        justify: "center",
+        justifyContent: "center",
         marginBottom: "40px",
 
     },
 
 });
 
-const Home = () => {
+//! For Loading animation -> Start
+const override = css`
+display: block;
+margin: 0 auto;
+border-color: green;
+`;
+const LoadinAnimeStyle = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
+//! For Loading animation -> End
 
+const Home = () => {
+    let [allPosts, setAllPosts] = useState([]);
+    let [loading, setLoading] = useState(true);
+
+
+    const getAllPosts = () => {
+
+        axios.get(`http://127.0.0.1:8000/api/posts`)
+            .then(res => {
+                setAllPosts(res.data);
+                setLoading(false);
+            });
+
+    }
+
+
+
+    useEffect(() => {
+        getAllPosts();
+        document.title = "Student Portal - Home"
+        console.log(allPosts);
+    }, []);
     const classes = useStyles();
     const [regMsg, setRegMsg] = useState("");
 
@@ -43,27 +79,47 @@ const Home = () => {
 
     return (
         <>
+
             <Header />
             <Container maxWidth="lg">
+            <Grid container spacing={1}>
+                <Grid item sm={8} xs={12}>
+                <div style={LoadinAnimeStyle}>
+                <HashLoader loading={loading} color='#39E1FA' size={200} css={override} />
+                </div>
+                {!loading && <>
+                    {allPosts.map(post=>{
+                        return(
+                            <Fade left>
+                            <AllPosts
+                            title={post.title}
+                            category={post.category.name}
+                            postUser={post.user.uname}
+                            postTime={post.created_at}
+                            body={post.pbody}
+                            view={post.views}
+                            comment={post.comments}
+                            
+                            /> 
+                            </Fade>
 
-                {sessionStorage.getItem('uname')}
-                {sessionStorage.getItem('type')}
-                {sessionStorage.getItem('token')}
-                {sessionStorage.getItem('id')}
 
-                <Grid container justify='center'>
-                    {regMsg === null ?
-                        null
-                        :
-                        <Grid item xs={12}>
-                            <Flash>
-                                <Alert severity="success">{regMsg}</Alert>
-                            </Flash>
-                        </Grid>
+                        )
+                    })}
+                
+                </>}                   
+                
+                </Grid>
+                <Grid item sm={4} xs={12} >
+                    <Fade right>
+                        <AboutUs className={classes.card} />
+                    </Fade>
+                </Grid>
+            </Grid>
+            {/* <Container maxWidth="lg">
+                <Grid container justifyContent='center'>
 
-                    }
                     <Grid item xs={12}>
-
                         <div>
                             <Pulse>
                                 <Box style={{
@@ -71,13 +127,9 @@ const Home = () => {
                                     backgroundSize: "cover",
                                     height: '500px',
                                     alignSelf: "center",
-                                    // position: 'fixed',
-                                    // justify: 'center'
-                                    // width: 150,
+                        
                                 }}>
-                                    {/* <Typography variant="h5" gutterBottom color="text.primary">
-                                        <Box color="text.primary">text.secondary</Box>
-                                    </Typography> */}
+                                   
                                 </Box>
                             </Pulse>
                         </div>
@@ -158,12 +210,31 @@ const Home = () => {
 
                     <Grid item xs={12} md={8}>
                         <Fade up>
-                            <AllPosts />
-                        </Fade>
+
+                            {/* <AllPosts/> */}
+
+            {/* <HashLoader loading={loading} color='#39E1FA' size={200} css={override} /> */}
+
+            {/* {!loading && <>hello</>} */}
+            {/* {loading?<>hello</>:<>hello</>} */}
+            {/* {allPosts.map(post => {
+                                return (
+                                    // <AllPosts />
+                                    <>hello</>
+                                )
+
+                            })} */}
+
+
+
+
+
+            {/* </Fade>
                     </Grid>
                     {/* <Grid item md={1}/> */}
-                    <Grid item xs={12} md={4}>
-                        <Grid container justify='flex-end'>
+            {/* <Grid item xs={12} md={4}>
+                        <Grid container justifyContent='flex-end'>
+
                             <Fade right>
                                 <AboutUs className={classes.card} />
                             </Fade>
@@ -175,8 +246,11 @@ const Home = () => {
                 </Grid>
 
 
-            </Container>
+            </Container> */}
 
+
+
+</Container>
 
             <Footer />
         </>

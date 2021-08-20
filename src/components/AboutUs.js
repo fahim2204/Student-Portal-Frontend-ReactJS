@@ -5,7 +5,7 @@ import { Card, CardContent, Container, makeStyles, Paper } from '@material-ui/co
 //     card: {
 //         width: "100%",
 //         marginTop: "40px",
-//         justify: "center",
+//         justifyContent: "center",
 //         marginBottom: "40px",
 
 //     },
@@ -18,7 +18,7 @@ const AboutUs = () => {
         
         <div>
             
-                <Container justify="center">
+                <Container justifyContent="center">
                     <Paper>
                     <Card >
                         <CardContent>
@@ -26,7 +26,7 @@ const AboutUs = () => {
                                 <div className="row">
                                     <div className="col-sm-12 col-md-6">
                                         <h6>About</h6>
-                                        <p className="text-justify">Student Portal is an initiative to help Students with the answer.Biggest online
+                                        <p className="text-justifyContent">Student Portal is an initiative to help Students with the answer.Biggest online
                                             learning platform in Bangladesh! Post questions about anything, get help from experts and share
                                             expertise with others.</p>
                                     </div>
