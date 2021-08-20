@@ -1,4 +1,4 @@
-import { Box, Chip,  Fab, Grid, IconButton, makeStyles, Paper, TextField} from '@material-ui/core';
+import { Box, Chip, Fab, Grid, IconButton, makeStyles, Paper, TextField, Typography, Button, ButtonGroup } from '@material-ui/core';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
@@ -11,22 +11,37 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import SendIcon from '@material-ui/icons/Send';
 import FaceIcon from '@material-ui/icons/Face';
+//? Time Format Change
+import TimeAgo from 'javascript-time-ago'
+import ReactTimeAgo from 'react-time-ago'
+import en from 'javascript-time-ago/locale/en'
+//? Read More
+import ReadMoreReact from 'read-more-react';
+
 
 const useStyles = makeStyles((theme) => ({
 
     paper: {
         padding: theme.spacing(2),
-        // textAlign: 'center',
+        borderRadius: "10px",
         color: theme.palette.text.secondary,
-        margin: theme.spacing(5),
+        marginBottom: theme.spacing(3),
+        // margin: theme.spacing(5),
     },
+    postsHeader: {
+        marginTop: "-10px",
+        marginBottom: "5px",
+        borderBottom: "1px solid gray"
+    },
+    postsFooter: {
+        marginTop: "8px",
+    }
 
 }));
 
-const AllPosts = () => {
+TimeAgo.addDefaultLocale(en)
 
-
-
+const AllPosts = (props) => {
     const classes = useStyles();
 
     const [vote, setVote] = React.useState('');
@@ -36,116 +51,52 @@ const AllPosts = () => {
         setVote(status);
     };
 
-    
-
 
     return (
-        <div>
-            
-            <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} sm={8}>
-                    <Paper className={classes.paper} elevation={5}>
-
-
-
-                        <Grid container spacing={1}>
-
-                            <Grid item xs={4} md={3} lg={2}>
-                                <b>Post category</b>
-                            </Grid>
-
-                            <Grid item xs={4} md={3} lg={2}>
-                                <Link to="#" style={{ textDecoration: 'none' }}>
-                                    <Chip
-                                    size="small"
-                                    icon={<FaceIcon />}
-                                    label="username"
-                                    clickable
-                                    color="primary"
-                                    variant="outlined"
-                                />
-                                </Link>
-                            </Grid>
-
-                            <Grid item xs={4} md={3} lg={2}>
-                                <Box color="success.main"><b>post date</b></Box>
-                            </Grid>
-                            <Grid item xs={1} md={1} lg={4} />
-                            <Grid item xs={12} md={2} lg={2}>
-                                <IconButton size="small" aria-label="delete" className={classes.margin}>
-                                    <EditIcon />
-                                </IconButton>
-
-                                <IconButton size="small" aria-label="delete" className={classes.margin}>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </Grid>
-                            <br /><br />
-
-                        </Grid>
-                        <hr />
-                        <Grid item xs={12}>
-                            <h2>Post title here</h2>
-                        </Grid>
-                        <Grid item xs={12}>
-                            post Content
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                        </Grid>
-                        <br /><hr />
-
-                        <Grid container spacing={1}>
-                            <Grid item xs={6} sm={5} md={4} lg={2}>
-
-                                <ToggleButtonGroup value={vote} exclusive onChange={handleVote}>
-                                    <ToggleButton value="upvote" aria-label="upvote">
-                                        <ArrowUpwardOutlinedIcon />100
-                                    </ToggleButton>
-                                    <ToggleButton value="downvote" aria-label="downvote">
-                                        <ArrowDownwardOutlinedIcon />
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
-
-
-                            </Grid>
-                            <Grid item xs={2} sm={2} lg={1}>
-
-                                <div>
-                                    <CommentOutlinedIcon />
-                                </div>
-                                <div>
-                                    num
-                                </div>
-
-                            </Grid>
-                            <Grid item xs={2} sm={2} lg={1}>
-
-                                <div>
-                                    <VisibilityOutlinedIcon />
-                                </div>
-                                <div>
-                                    num
-                                </div>
-
-                            </Grid>
-
-
-
-
-                        </Grid>
-
-
-                    </Paper>
-
-
-
-                  
-
-
-                   
+        <>
+            <Paper className={classes.paper} elevation={5}>
+                <Grid container spacing={1} className={classes.postsHeader}>
+                    <Grid item>
+                        {props.category}
+                    </Grid>
+                    <Grid item>
+                        Posted By
+                    </Grid>
+                    <Grid item>
+                        <Link to={`/profile/${props.postUser}`} style={{ textDecoration: 'none' }}>
+                            <Chip
+                                size="small"
+                                icon={<FaceIcon />}
+                                label={props.postUser}
+                                clickable
+                                color="primary"
+                                variant="outlined"
+                            />
+                        </Link>
+                    </Grid>
+                    <Grid item>
+                        <ReactTimeAgo date={props.postTime} locale="en-US" />
+                    </Grid>
                 </Grid>
-            </Grid>
+                <Grid container spacing={1}>
+                    <h2>{props.title}</h2>
+                </Grid>
+                <Grid container spacing={1}>
+                    <Typography variant="body1" color="initial">
+                        <ReadMoreReact text={props.body} />
+                    </Typography>
+                </Grid>
+                <Grid container spacing={1} className={classes.postsFooter}>
+                    <ButtonGroup size="small" variant="contained" color="default" aria-label="">
+                        <Button>u</Button>
+                        <Button>d</Button>
 
-        </div>
+                    </ButtonGroup>
+                </Grid>
+            </Paper>
+
+        </>
+
     )
 }
 

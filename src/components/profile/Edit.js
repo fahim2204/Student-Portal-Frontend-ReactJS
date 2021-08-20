@@ -229,7 +229,9 @@ const Edit = () => {
         formData.append('cPassword', cpassword)
 
 
+
         if (password === "" || cpassword === "" || password !== cpassword || oldPassword === "") {
+
 
             if (!/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/.test(password)) {
                 setPasswordValidation("Password is not Valid")

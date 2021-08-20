@@ -33,7 +33,7 @@ const Footer = () => {
                                 <Typography variant="h6" gutterBottom>
                                     Categories
                                 </Typography>
-                                <Typography variant="body2" gutterBottom>
+                            
                                     <ul className="footer-links">
                                         <li><a href="{{ route('posts.view.cat', 'math') }}">Math</a></li>
                                         <li><a href="{{ route('posts.view.cat', 'physics') }}">Physics</a></li>
@@ -44,7 +44,7 @@ const Footer = () => {
                                         <li><a href="{{ route('posts.view.cat', 'economics') }}">Economics</a></li>
                                         <li><a href="{{ route('posts.view.cat', 'exam-prep') }}">Exam Preperation</a></li>
                                     </ul>
-                                </Typography>
+                             
                             </Box>
 
                         </Grid>
@@ -53,7 +53,7 @@ const Footer = () => {
                                 <Typography variant="h6" gutterBottom>
                                     Quick Links
                                 </Typography>
-                                <Typography variant="body2" gutterBottom>
+                            
                                     <ul className="footer-links">
                                         <li><a href="http://scanfcode.com/about/">About Us</a></li>
                                         <li><a href="http://scanfcode.com/contact/">Contact Us</a></li>
@@ -66,7 +66,7 @@ const Footer = () => {
                                         <li><a href="{{ route('moderator.dashboard') }}"><b>Moderator Panel</b></a></li>
                                         @endif
                                     </ul>
-                                </Typography>
+                            
                             </Box>
 
                         </Grid>
