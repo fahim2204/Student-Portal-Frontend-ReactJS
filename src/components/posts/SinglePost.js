@@ -32,6 +32,18 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(3),
         // margin: theme.spacing(5),
     },
+    paperunLogin: {
+        padding: theme.spacing(3),
+        borderRadius: "10px",
+        color: theme.palette.text.secondary,
+        // margin: theme.spacing(5),
+    },
+    paperLogin: {
+        padding: theme.spacing(2),
+        borderRadius: "10px",
+        color: theme.palette.text.secondary,
+        // margin: theme.spacing(5),
+    },
     postsHeader: {
         marginTop: "-10px",
         marginBottom: "5px",
@@ -56,23 +68,21 @@ const LoadinAnimeStyle = { position: "fixed", top: "50%", left: "50%", transform
 
 const SinglePost = () => {
 
-
     let { id } = useParams();
     let [allPosts, setAllPosts] = useState([]);
+    let [commentText, setCommentText] = useState([]);
     let [loading, setLoading] = useState(true);
     let history = new useHistory();
     let [comment, setcomment] = useState([]);
     TimeAgo.addDefaultLocale(en)
 
     const getAllPosts = () => {
-
         axios.get(`http://127.0.0.1:8000/api/posts/${id}`)
             .then(res => {
                 setAllPosts(res.data.post);
                 setcomment(res.data.comments);
                 setLoading(false);
             });
-
     }
 
     useEffect(() => {
@@ -85,7 +95,29 @@ const SinglePost = () => {
     const classes = useStyles();
 
     const [vote, setVote] = React.useState('');
+    let handleCommentText = (event) => {
+        setCommentText(event.target.value);
+    };
+    const handleComment = async (event) => {
+        event.preventDefault();
+        if(commentText!==""){
+            let formData = new FormData();
+            formData.append('ctext', commentText)
+            try {
+                await axios.post(`http://127.0.0.1:8000/api/posts/comment/${id}/${sessionStorage.getItem('id')}`, formData);
+                // history.push(`/post/${id}`)
+                getAllPosts();
+                setCommentText("");
+    
+            } catch (error) {
+                console.log(error);
+            }
+        }else{
+            alert("Can't Leave empty Comment");
+        }
 
+    }
+  
     const handleVote = (event, status) => {
         event.preventDefault();
         setVote(status);
@@ -197,22 +229,36 @@ const SinglePost = () => {
 
                         {/* comment section */}
 
-                        <Paper className={classes.paper} elevation={3}>
+                        <Paper className={classes.paperLogin} elevation={3}>
                             <Grid container spacing={3}>
+                            {sessionStorage.getItem('id')!==null? <>
                                 <Grid item xs={9} md={10} lg={11}>
                                     <TextField
                                         style={{ width: "100%" }}
                                         id="outlined-multiline-static"
                                         label="Add Comment"
                                         multiline
+                                        required
                                         variant="outlined"
+                                        onChange={handleCommentText}
                                     />
                                 </Grid>
                                 <Grid item xs={3} md={2} lg={1}>
                                     <Fab color="primary" aria-label="add" className={classes.margin}>
-                                        <SendIcon />
+                                        <SendIcon onClick={handleComment} />
                                     </Fab>
                                 </Grid>
+                            
+                            </> : <>
+                            <Paper className={classes.paperunLogin} elevation={0}>
+                                <Typography  variant="h6" color="initial">Please  
+                                <Link style={{marginLeft:"5px",marginRight:"5px"}} to="/login">
+                                login
+                                </Link>
+                                
+                                  to Comment</Typography>
+                            </Paper>
+                            </>}
                                 <Grid item xs={12}>
                                     <h3>Comments</h3>
                                 </Grid>

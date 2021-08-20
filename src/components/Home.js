@@ -49,7 +49,7 @@ const Home = () => {
 
     const getAllPosts = () => {
 
-        axios.get(`http://127.0.0.1:8000/api/posts`)
+        axios.get(`http://127.0.0.1:8000/api/post`)
             .then(res => {
                 setAllPosts(res.data);
                 setLoading(false);
