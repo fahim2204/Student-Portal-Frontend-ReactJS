@@ -1,4 +1,6 @@
-import { AppBar, Box, Grid, IconButton, Toolbar, Paper, TextField, Typography, Button, makeStyles, createTheme, ThemeProvider, MenuItem, Container } from '@material-ui/core';
+
+import { AppBar, Box, Grid, IconButton, Toolbar, Paper, TextField, Typography, Button, makeStyles, createTheme, ThemeProvider, MenuItem, Container, ListItemText } from '@material-ui/core';
+
 import * as React from 'react';
 
 import { Link, useHistory } from "react-router-dom";
@@ -9,7 +11,17 @@ import { blue, green } from '@material-ui/core/colors';
 import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import Menu from '@material-ui/core/Menu';
+import clsx from 'clsx';
 
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListItem from '@material-ui/core/ListItem';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const drawerWidth = 240;
 
 
 
@@ -31,6 +43,58 @@ const useStyles = makeStyles(() => ({
 
     },
 
+    appBarShift: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    hide: {
+        display: 'none',
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        marginLeft: -drawerWidth,
+
+    },
+    contentShift: {
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginLeft: 0,
+    },
+    linksStyle: {
+        textDecoration: 'none',
+        color: 'black',
+    },
+
+
 
 }));
 
@@ -42,6 +106,12 @@ const theme = createTheme({
 });
 
 const Header = () => {
+
+    // let [categories, setCategories] = useState([]);
+
+
+    const [open, setOpen] = useState(false);
+
 
     const history = new useHistory();
 
@@ -60,6 +130,45 @@ const Header = () => {
         history.push("/login");
     };
 
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+
+    // const getCategory = () => {
+    //     axios.get(`http://127.0.0.1:8000/api/categories`)
+    //         .then(res => {
+    //             setCategories(res.data);
+    //             console.log(res.data);
+    //         });
+    // }
+    // React.useEffect(() => {
+    //     getCategory();
+
+    // }, [])
+    let [categories, setCategories] = useState([]);
+
+    const getCategory = () => {
+        axios.get(`http://127.0.0.1:8000/api/categories`)
+            .then(res => {
+                setCategories(res.data);
+                // setLoading(false);
+                console.log(res.data);
+            });
+    }
+
+    useEffect(() => {
+        getCategory();
+
+    }, [])
+
+
+
+
 
 
     const classes = useStyles();
@@ -67,7 +176,10 @@ const Header = () => {
     return (
         <div>
             <Container maxWidth="lg">
-                <AppBar color='transparent' position='static' alignItems='center' justifyContent='center' elevation={2} style={{ marginBottom: '10px' }}>
+                <AppBar color='transparent' position='static' alignItems='center' justifyContent='center' elevation={2} style={{ marginBottom: '10px' }}
+                    className={clsx({
+                        [classes.appBarShift]: open,
+                    })}>
                     {/* <Paper elevation={1}> */}
                     <Toolbar className={classes.toolbar} >
                         <Grid container spacing={3} alignItems='center' justifyContent='center' >
@@ -79,6 +191,9 @@ const Header = () => {
                                             edge="start"
                                             color="inherit"
                                             aria-label="menu"
+                                            onClick={handleDrawerOpen}
+                                            edge="start"
+                                            className={clsx(classes.menuButton, open && classes.hide)}
                                         >
                                             <MenuIcon />
                                         </IconButton>
@@ -93,8 +208,8 @@ const Header = () => {
                                 </Grid>
                             </Grid>
                             <Grid item xs={5} lg={4}>
-                                <Link to="/" style={{ textDecoration: 'none',color:'black' }}>
-                                    <Typography variant="h4"  component="div">Student Potal</Typography>
+                                <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
+                                    <Typography variant="h4" component="div">Student Potal</Typography>
                                 </Link>
 
                             </Grid>
@@ -179,6 +294,31 @@ const Header = () => {
                     </Toolbar>
                     {/* </Paper> */}
                 </AppBar>
+                <Drawer
+                    className={classes.drawer}
+                    variant="persistent"
+                    anchor="left"
+                    open={open}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                >
+                    <div className={classes.drawerHeader}>
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                        </IconButton>
+                    </div>
+                    {/* <Divider /> */}
+                    <List>
+                    {categories.map((category) => (
+                            <ListItem button key={category.id}>
+                                {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
+                                <Link className={classes.linksStyle} to={`/posts/${category.name}`}><ListItemText primary={category.name} /></Link>
+                                {/* <ListItemText primary={category.name} /> */}
+                            </ListItem>
+                        ))}
+                    </List>
+                </Drawer>
             </Container>
 
 
