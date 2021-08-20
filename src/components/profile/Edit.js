@@ -107,11 +107,10 @@ const Edit = () => {
         
         axios.get(`http://127.0.0.1:8000/api/profile/${uname}`)
         .then(res => {
-            setname(res.data.profileInfo.name)
-            setEmail(res.data.profileInfo.email)
-            setContact(res.data.profileInfo.contact)
-            setAddress(res.data.profileInfo.address)
-            setPassword()
+            setname(res.data.profileInfo!==null ? res.data.profileInfo.name:'UNKNOWN')
+            setEmail(res.data.profileInfo!==null ? res.data.profileInfo.email:'UNKNOWN')
+            setContact(res.data.profileInfo!==null ? res.data.profileInfo.contact:'UNKNOWN')
+            setAddress(res.data.profileInfo!==null ? res.data.profileInfo.address:'UNKNOWN')
         });
         
         const search = window.location.search;
@@ -259,13 +258,17 @@ const Edit = () => {
 
     };
 
-     const DeleteAccountHandler = ()=>{
-        let formData = new FormData()
-        formData.append('deletePassword', deletePassword)
-        try {
-            axios.delete(`http://127.0.0.1:8000/api/profile/${uname}`, formData);
-        } catch (error) {
-            console.log(error);
+     const DeleteAccountHandler = (event)=>{
+        event.preventDefault();
+        // let formData = new URLSearchParams();
+        // formData.append('deletePassword', deletePassword)
+        if(deletePassword!==null){
+            try {
+                axios.delete(`http://127.0.0.1:8000/api/profile/${uname}`, {data:{deletePassword: deletePassword}});
+                console.log("tried");
+            } catch (error) {
+                console.log(error);
+            }
         }
      }
 
@@ -451,7 +454,7 @@ const Edit = () => {
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <form className="submit">
+                        <form className="submit" onSubmit={DeleteAccountHandler}>
                             <Grid item xs={12}>
                                 <TextField
                                     label="Confirm Password"
@@ -473,7 +476,6 @@ const Edit = () => {
                                 <Button type='submit' variant="contained"
                                     color="secondary"
                                     className={classes.button}
-                                    onClick={()=>DeleteAccountHandler()}
                                     startIcon={<DeleteIcon />} size="large">Delete</Button>
                             </Grid>
                         </form>

@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
+import Header from './../Header';
 import {
     Link,
     useParams
@@ -102,7 +103,10 @@ const View = (props) => {
                 <HashLoader loading={loading} color='#39E1FA' size={200} css={override} />
             </div>
             {!loading && <>
-                <div>
+                <Header />
+                <Container maxWidth="lg">
+
+
                     <Breadcrumbs aria-label="breadcrumb" className={classes.margin}>
                         <Link color="inherit" to="/">
                             Home
@@ -123,7 +127,7 @@ const View = (props) => {
                                                         <Box display="flex" justifyContent="center">
                                                             <Box borderRadius="50%" className={classes.imgBorder} >
                                                                 <img
-                                                                    src={`http://127.0.0.1:8000/upload/${profile.profileInfo.image}`}
+                                                                    src={profile.profileInfo!==null ? `http://127.0.0.1:8000/upload/${profile.profileInfo.image}`:``}
                                                                     alt={`Profile-img`}
                                                                     style={{
                                                                         alignSelf: 'center',
@@ -162,7 +166,7 @@ const View = (props) => {
                                                     </Grid>
                                                     <Grid item xs={8} sm={9} lg={10}>
                                                         <Paper className={classes.paper}>
-                                                            {profile.profileInfo.name}
+                                                            {profile.profileInfo!==null ? profile.profileInfo.name:'UNKNOWN'}
                                                         </Paper>
                                                     </Grid>
                                                     <Grid item xs={4} sm={3} lg={2}>
@@ -170,7 +174,7 @@ const View = (props) => {
                                                     </Grid>
                                                     <Grid item xs={8} sm={9} lg={10}>
                                                         <Paper className={classes.paper}>
-                                                            {profile.profileInfo.email}
+                                                            {profile.profileInfo!==null ? profile.profileInfo.email : 'UNKNOWN'}
                                                         </Paper>
                                                     </Grid>
                                                     <Grid item xs={4} sm={3} lg={2}>
@@ -178,7 +182,7 @@ const View = (props) => {
                                                     </Grid>
                                                     <Grid item xs={8} sm={9} lg={10}>
                                                         <Paper className={classes.paper}>
-                                                            {profile.profileInfo.contact}
+                                                            {profile.profileInfo!==null ? profile.profileInfo.contact : 'UNKNOWN'}
                                                         </Paper>
                                                     </Grid>
                                                     <Grid item xs={4} sm={3} lg={2}>
@@ -186,7 +190,7 @@ const View = (props) => {
                                                     </Grid>
                                                     <Grid item xs={8} sm={9} lg={10}>
                                                         <Paper className={classes.paper}>
-                                                            {profile.profileInfo.address}
+                                                            {profile.profileInfo!==null ? profile.profileInfo.address : 'UNKNOWN'}
                                                         </Paper>
                                                     </Grid>
                                                 </Grid>
@@ -213,7 +217,8 @@ const View = (props) => {
                             </div>
                         </Container>
                     </Grid>
-                </div>
+
+                </Container>
             </>}
         </>
     )
