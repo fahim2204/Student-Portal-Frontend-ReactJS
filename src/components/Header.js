@@ -20,8 +20,8 @@ const useStyles = makeStyles(() => ({
         textAlign: "center",
         height: "60px",
         padding: "5px",
-        justifyContent: 'center'   
-     },
+        justifyContent: 'center'
+    },
     btn: {
         textAlign: "center",
         margin: "1%",
@@ -68,7 +68,7 @@ const Header = () => {
     return (
         <div>
             <Container maxWidth="lg">
-                <AppBar color='transparent' position='static' alignItems='center' justifyContent='center' elevation={0} style={{marginBottom: '10px'}}>
+                <AppBar color='transparent' position='static' alignItems='center' justifyContent='center' elevation={0} style={{ marginBottom: '10px' }}>
                     {/* <Paper elevation={1}> */}
                     <Toolbar className={classes.toolbar} >
                         <Grid container spacing={3} alignItems='center' justifyContent='center' >
@@ -94,8 +94,9 @@ const Header = () => {
                                 </Grid>
                             </Grid>
                             <Grid item xs={5} lg={4}>
-
-                                <Typography variant="h5" component="div">Student Potal</Typography>
+                                <Link to="/" style={{ textDecoration: "none" }}>
+                                    <Typography variant="h5" color="text.primary" component="div">Student Potal</Typography>
+                                </Link>
 
                             </Grid>
                             <Grid item xs>
@@ -168,7 +169,7 @@ const Header = () => {
                     </Toolbar>
                     {/* </Paper> */}
                 </AppBar>
-            </Container>
+            </Container >
 
 
 

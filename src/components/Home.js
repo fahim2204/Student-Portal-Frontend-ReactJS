@@ -1,7 +1,7 @@
 import Header from './Header';
 import Footer from './Footer';
 import Container from '@material-ui/core/Container'
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Collapse, Grid, IconButton, makeStyles, Paper, Snackbar, Typography } from '@material-ui/core';
 // import HomeCarousel from './HomeCarousel';
 import Fade from 'react-reveal/Fade';
 import img from './img.png';
@@ -14,6 +14,8 @@ import AllPosts from './posts/AllPosts';
 import { useEffect, useState } from 'react';
 import { Alert } from '@material-ui/lab';
 import Flash from 'react-reveal/Flash';
+import CloseIcon from '@material-ui/icons/Close';
+// import Snackbar from '@material-ui/core/Snackbar';
 
 const useStyles = makeStyles({
     card: {
@@ -41,6 +43,16 @@ const Home = () => {
 
     }, [])
 
+    const [open, setOpen] = useState(true);
+
+    // const handleClose = (event, reason) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+
+    //     setOpen(false);
+    // };
+
     return (
         <>
             <Header />
@@ -56,9 +68,27 @@ const Home = () => {
                         null
                         :
                         <Grid item xs={12}>
-                            <Flash>
-                                <Alert severity="success">{regMsg}</Alert>
-                            </Flash>
+                        <Collapse in={open}>
+                            
+                                
+                                <Flash>
+                                    <Alert severity="success"
+                                        action={
+                                            <IconButton
+                                                aria-label="close"
+                                                color="inherit"
+                                                size="small"
+                                                onClick={() => {
+                                                    setOpen(false);
+                                                }}
+                                            >
+                                                <CloseIcon fontSize="inherit" />
+                                            </IconButton>
+                                        }
+                                    >{regMsg}
+                                    </Alert>
+                                </Flash>
+                        </Collapse>
                         </Grid>
 
                     }
