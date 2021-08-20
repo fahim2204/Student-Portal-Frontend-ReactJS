@@ -14,9 +14,13 @@ import Pulse from 'react-reveal/Pulse';
 import AboutUs from './AboutUs';
 import SinglePost from './posts/SinglePost';
 import AllPosts from './posts/AllPosts';
+
+import { useEffect, useState } from 'react';
+import { Alert } from '@material-ui/lab';
+import Flash from 'react-reveal/Flash';
+
 import { css } from "@emotion/react";
 import { ClipLoader, HashLoader } from "react-spinners";
-
 
 const useStyles = makeStyles({
     card: {
@@ -61,6 +65,17 @@ const Home = () => {
         console.log(allPosts);
     }, []);
     const classes = useStyles();
+    const [regMsg, setRegMsg] = useState("");
+
+    useEffect(() => {
+
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        const foo = params.get('msg');
+        setRegMsg(foo)
+        // console.log(regMsg)
+
+    }, [])
 
     return (
         <>
@@ -88,6 +103,7 @@ const Home = () => {
                             /> 
                             </Fade>
 
+
                         )
                     })}
                 
@@ -102,6 +118,7 @@ const Home = () => {
             </Grid>
             {/* <Container maxWidth="lg">
                 <Grid container justifyContent='center'>
+
                     <Grid item xs={12}>
                         <div>
                             <Pulse>
@@ -193,6 +210,7 @@ const Home = () => {
 
                     <Grid item xs={12} md={8}>
                         <Fade up>
+
                             {/* <AllPosts/> */}
 
             {/* <HashLoader loading={loading} color='#39E1FA' size={200} css={override} /> */}
@@ -216,6 +234,7 @@ const Home = () => {
                     {/* <Grid item md={1}/> */}
             {/* <Grid item xs={12} md={4}>
                         <Grid container justifyContent='flex-end'>
+
                             <Fade right>
                                 <AboutUs className={classes.card} />
                             </Fade>
@@ -229,7 +248,10 @@ const Home = () => {
 
             </Container> */}
 
+
+
 </Container>
+
             <Footer />
         </>
     );
