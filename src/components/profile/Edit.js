@@ -166,7 +166,7 @@ const Edit = () => {
         formData.append('address', address)
 
 
-        if (name === "" || email === "" || contact === "" || address === "") {
+        if (name === "" || email === "" || contact === "" || address === "" || !/\S+@\S+\.\S+/.test(email) || !/(^([+]{1}[8]{2}|0088)?(01){1}[3-9]{1}\d{8})$/.test(contact)) {
             if (name.length < 3) {
                 setNameValidation("Full Name is not Valid")
                 setNameValidationText(true)

@@ -234,7 +234,8 @@ const View = (props) => {
                                                 <CardContent >
                                                     <Grid container spacing={3}>
                                                         <Button className={classes.margin} onClick={toggleOwnPostHandler} variant="contained" color="primary">
-                                                            Toggle {uname}'s Post
+                                                            {/* {uname}'s Post */}
+                                                            My Posts
                                                         </Button>
                                                     </Grid>
                                                     {

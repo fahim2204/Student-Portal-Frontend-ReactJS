@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, InputLabel, makeStyles, NativeSelect, Paper, Select, TextField } from '@material-ui/core'
+import { Button, Container, FormControl, Grid, InputLabel, makeStyles, NativeSelect, Paper, Select, TextField } from '@material-ui/core'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { css } from "@emotion/react";
@@ -34,7 +34,7 @@ const CreatePosts = () => {
                 setCategories(res.data);
                 setLoading(false);
                 // console.log(res);
-                
+
             });
     }
 
@@ -94,74 +94,76 @@ const CreatePosts = () => {
                 {!loading && <>
                     <div>
                         <Header />
-                        <Grid container spacing={3} justifyContent="center">
-                            <Grid item xs={12}>
-                                <form onSubmit={formSubmissionCreatePost}>
-                                    <Paper className={classes.paper}>
-                                        <h1>Create Post</h1>
-                                        <FormControl required variant="outlined" className={classes.formControl}>
-                                            <InputLabel >Category</InputLabel>
-                                            <Select
-                                                native
-                                                onChange={handleSelectCat}
-                                                label="category"
+                        <Container maxWidth="lg">
+                            <Grid container spacing={3} justifyContent="center">
+                                <Grid item xs={12}>
+                                    <form onSubmit={formSubmissionCreatePost}>
+                                        <Paper className={classes.paper}>
+                                            <h1>Create Post</h1>
+                                            <FormControl required variant="outlined" className={classes.formControl}>
+                                                <InputLabel >Category</InputLabel>
+                                                <Select
+                                                    native
+                                                    onChange={handleSelectCat}
+                                                    label="category"
+                                                    inputProps={{
+                                                        name: 'category',
+                                                        id: 'category'
+                                                    }}
+                                                >
+                                                    <option aria-label="None" value="" />
+                                                    {categories.map((cat, i) => {
+                                                        return (
+                                                            <option key={i} value={cat.id}>{cat.name}</option>
+                                                        )
+                                                    })
+                                                    }
+
+                                                </Select>
+                                            </FormControl>
+
+                                            <TextField required
+                                                label="Title"
+                                                onChange={handleTitle}
                                                 inputProps={{
-                                                    name: 'category',
-                                                    id: 'category'
+                                                    name: 'title',
+                                                    id: 'title'
                                                 }}
-                                            >
-                                                <option aria-label="None" value="" />
-                                                {categories.map((cat, i) => {
-                                                    return (
-                                                        <option key={i} value={cat.id}>{cat.name}</option>
-                                                    )
-                                                })
-                                                }
+                                                variant="outlined"
+                                                className={classes.formControl} />
 
-                                            </Select>
-                                        </FormControl>
-
-                                        <TextField required
-                                            label="Title"
-                                            onChange={handleTitle}
-                                            inputProps={{
-                                                name: 'title',
-                                                id: 'title'
-                                            }}
-                                            variant="outlined"
-                                            className={classes.formControl} />
-
-                                        <TextField
-                                            required
-                                            label="Post Content"
-                                            multiline
-                                            rows={4}
-                                            variant="outlined"
-                                            onChange={handleDesc}
-                                            inputProps={{
-                                                name: 'description',
-                                                id: 'description'
-                                            }}
-                                            className={classes.formControl}
-                                        />
-                                        <Grid container spacing={5} justifyContent="center">
-                                            <Grid item xs={3}>
-                                                <Button type='submit' variant="contained" size="large" color="primary">
-                                                    Post
-                                                </Button>
-                                            </Grid>
-                                            <Grid item xs={5}>
-                                                <Link to="/" style={{ textDecoration: 'none' }} >
-                                                    <Button variant="outlined" size="large" color="secondary">
-                                                        Cancel
+                                            <TextField
+                                                required
+                                                label="Post Content"
+                                                multiline
+                                                rows={4}
+                                                variant="outlined"
+                                                onChange={handleDesc}
+                                                inputProps={{
+                                                    name: 'description',
+                                                    id: 'description'
+                                                }}
+                                                className={classes.formControl}
+                                            />
+                                            <Grid container spacing={5} justifyContent="center">
+                                                <Grid item xs={3}>
+                                                    <Button type='submit' variant="contained" size="large" color="primary">
+                                                        Post
                                                     </Button>
-                                                </Link>
+                                                </Grid>
+                                                <Grid item xs={5}>
+                                                    <Link to="/" style={{ textDecoration: 'none' }} >
+                                                        <Button variant="outlined" size="large" color="secondary">
+                                                            Cancel
+                                                        </Button>
+                                                    </Link>
+                                                </Grid>
                                             </Grid>
-                                        </Grid>
-                                    </Paper>
-                                </form>
+                                        </Paper>
+                                    </form>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </Container>
                     </div>
                 </>}
             </>
