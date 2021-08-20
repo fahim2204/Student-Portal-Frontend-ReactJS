@@ -1,73 +1,105 @@
-import React from 'react'
-import { Card, CardContent, Container, makeStyles, Paper } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { Card, CardContent, Container, Divider, List, ListItem, ListItemText, makeStyles, Paper, Typography } from '@material-ui/core'
+import { css } from "@emotion/react";
+import { ClipLoader, HashLoader, PuffLoader } from "react-spinners";
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-// const useStyles = makeStyles({
-//     card: {
-//         width: "100%",
-//         marginTop: "40px",
-//         justifyContent: "center",
-//         marginBottom: "40px",
 
-//     },
-// });
+const useStyles = makeStyles({
+    card: {
+        width: "100%",
+        justifyContent: "center",
+        padding: "10px",
+        marginBottom: "10px",
+        borderRadius: "10px"
+    },
+    links: {
+        marginLeft: "15px",
+        marginTop: "-10px",
+        marginRight: "50px"
+    },
+    linksStyle: {
+        textDecoration: 'none',
+        color: 'black',
+    }
+});
 
 const AboutUs = () => {
-    
-    // const classes = useStyles();
+
+    const classes = useStyles();
+    let [loading, setLoading] = useState(true);
+    let [categories, setCategories] = useState([]);
+
+    const getCategory = () => {
+        axios.get(`http://127.0.0.1:8000/api/categories`)
+            .then(res => {
+                setCategories(res.data);
+                setLoading(false);
+            });
+    }
+
+    useEffect(() => {
+        getCategory();
+
+    }, [])
+
+
+
+
     return (
-        
+
         <div>
-            
-                <Container justifyContent="center">
-                    <Paper>
-                    <Card >
-                        <CardContent>
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col-sm-12 col-md-6">
-                                        <h6>About</h6>
-                                        <p className="text-justifyContent">Student Portal is an initiative to help Students with the answer.Biggest online
-                                            learning platform in Bangladesh! Post questions about anything, get help from experts and share
-                                            expertise with others.</p>
-                                    </div>
-                                    <div className="col-xs-6 col-md-3">
-                                        <h6>Categories</h6>
-                                        <ul className="footer-links">
-                                            <li><a href="{{ route('posts.view.cat', 'math') }}">Math</a></li>
-                                            <li><a href="{{ route('posts.view.cat', 'physics') }}">Physics</a></li>
-                                            <li><a href="{{ route('posts.view.cat', 'chemistry') }}">Chemistry</a></li>
-                                            <li><a href="{{ route('posts.view.cat', 'biology') }}">Biology</a></li>
-                                            <li><a href="{{ route('posts.view.cat', 'progamming') }}">Progamming</a></li>
-                                            <li><a href="{{ route('posts.view.cat', 'gk') }}">General Knowledge</a></li>
-                                            <li><a href="{{ route('posts.view.cat', 'economics') }}">Economics</a></li>
-                                            <li><a href="{{ route('posts.view.cat', 'exam-prep') }}">Exam Preperation</a></li>
-                                        </ul>
-                                    </div>
-                                    <div className="col-xs-6 col-md-3">
-                                        <h6>Quick Links</h6>
-                                        <ul className="footer-links">
-                                            <li><a href="http://scanfcode.com/about/">About Us</a></li>
-                                            <li><a href="http://scanfcode.com/contact/">Contact Us</a></li>
-                                            <li><a href="http://scanfcode.com/contribute-at-scanfcode/">Contribute</a></li>
-                                            <li><a href="http://scanfcode.com/privacy-policy/">Privacy Policy</a></li>
-                                            <li><a href="http://scanfcode.com/sitemap/">Sitemap</a></li>
-                                            @if (session()-&gt;get('type')==='admin')
-                                            <li><a href="{{ route('admin.dashboard') }}"><b>Admin Panel</b></a></li>
-                                            @elseif (session()-&gt;get('type')==='moderator')
-                                            <li><a href="{{ route('moderator.dashboard') }}"><b>Moderator Panel</b></a></li>
-                                            @endif
-                                        </ul>
-                                    </div>
+            <Container justifyContent="center">
+                <Paper elevation={5} className={classes.card}>
+                    <Typography variant="body1" color="initial">About</Typography>
+                    <br />
+                    <Typography variant="body2" color="initial" align="justify">
+                        Student Portal is an initiative to help Students with the answer.Biggest online
+                        learning platform in Bangladesh! Post questions about anything, get help from experts and share
+                        expertise with others.
+                    </Typography>
+                </Paper>
+                <Paper elevation={5} className={classes.card}>
+                    <Typography variant="body1" color="initial">Categories</Typography>
+                    <br />
+                    <HashLoader loading={loading} color='#39E1FA' size={100} />
+                    {!loading && <>
 
-                                </div>
-                            </div>
+                        <List component="nav" className={classes.links}>
+                            {categories.map(category => {
+                                return (
+                                    <>
+                                        <Link className={classes.linksStyle} to={`/posts/${category.name}`}>{category.name}</Link>
+                                        <Divider style={{ marginTop: "5px", marginBottom: "5px" }} />
+                                    </>
 
-                        </CardContent>
+                                )
+                            })}
+                        </List>
 
-                    </Card>
-                    </Paper>
-                </Container>
-            
+                    </>}
+                </Paper>
+                <Paper elevation={5} className={classes.card}>
+                    <Typography variant="body1" color="initial">Quick Links</Typography>
+                    <br />
+                    <HashLoader loading={loading} color='#39E1FA' size={100} />
+                    {!loading && <>
+
+                        <List component="nav" className={classes.links}>
+                            <Link className={classes.linksStyle} to={`#`}>About Us</Link>
+                            <Divider style={{ marginTop: "5px", marginBottom: "5px" }} />
+                            <Link className={classes.linksStyle} to={`#`}>Contact Us</Link>
+                            <Divider style={{ marginTop: "5px", marginBottom: "5px" }} />
+                            <Link className={classes.linksStyle} to={`#`}>Privacy Policy</Link>
+                            <Divider style={{ marginTop: "5px", marginBottom: "5px" }} />
+                        </List>
+
+                    </>}
+                </Paper>
+
+            </Container>
+
 
         </div>
     )

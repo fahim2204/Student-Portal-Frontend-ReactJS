@@ -31,10 +31,12 @@ const useStyles = makeStyles((theme) => ({
     postsHeader: {
         marginTop: "-10px",
         marginBottom: "5px",
-        borderBottom: "1px solid gray"
+        borderBottom: "1px solid #e1e8e3"
     },
     postsFooter: {
         marginTop: "8px",
+        marginBottom: "-15px",
+        borderTop: "1px solid #e1e8e3"
     }
 
 }));
@@ -54,13 +56,13 @@ const AllPosts = (props) => {
 
     return (
         <>
-            <Paper className={classes.paper} elevation={5}>
+            <Paper className={classes.paper} elevation={4}>
                 <Grid container spacing={1} className={classes.postsHeader}>
                     <Grid item>
                         {props.category}
                     </Grid>
                     <Grid item>
-                        Posted By
+                        <Typography variant="caption" color="textSecondary"> Posted By</Typography>
                     </Grid>
                     <Grid item>
                         <Link to={`/profile/${props.postUser}`} style={{ textDecoration: 'none' }}>
@@ -86,12 +88,42 @@ const AllPosts = (props) => {
                         <ReadMoreReact text={props.body} />
                     </Typography>
                 </Grid>
-                <Grid container spacing={1} className={classes.postsFooter}>
-                    <ButtonGroup size="small" variant="contained" color="default" aria-label="">
-                        <Button>u</Button>
-                        <Button>d</Button>
+                <Grid container spacing={1} className={classes.postsFooter} alignItems="center">
+                    <Grid item xs={6} sm={5} md={4} lg={2}>
+                        <ToggleButtonGroup size="small" value={vote} color="primary" onChange={handleVote}>
+                            <ToggleButton value="upvote" aria-label="upvote">
+                                <ArrowUpwardOutlinedIcon />{props.votes}
+                            </ToggleButton>
+                            <ToggleButton value="downvote" aria-label="downvote">
+                                <ArrowDownwardOutlinedIcon />
+                            </ToggleButton>
+                        </ToggleButtonGroup>
 
-                    </ButtonGroup>
+
+                    </Grid>
+                    <Grid item xs={2} sm={2} lg={1}>
+
+                    <Grid container spacing={1} alignItems="center">
+                            <Grid item>
+                                <CommentOutlinedIcon />
+                            </Grid>
+                            <Grid item>
+                                    {props.comment}
+                            </Grid>
+                        </Grid>
+                      
+                    </Grid>
+                    <Grid item xs={2} sm={2} lg={1} justifyContent="center" >
+                        <Grid container spacing={1} alignItems="center">
+                            <Grid item>
+                                <VisibilityOutlinedIcon />
+                            </Grid>
+                            <Grid item>
+                                    {props.view}
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
                 </Grid>
             </Paper>
 

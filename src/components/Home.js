@@ -3,7 +3,8 @@ import Footer from './Footer';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Container from '@material-ui/core/Container'
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
+import LetteredAvatar from 'react-lettered-avatar';
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, makeStyles, Paper, Typography, TextField, Avatar } from '@material-ui/core';
 // import HomeCarousel from './HomeCarousel';
 // import { Helmet } from 'react-helmet'
 import Fade from 'react-reveal/Fade';
@@ -11,27 +12,25 @@ import img from './img.png';
 import card1 from './card1.jpg'
 import card2 from './card2.jpg'
 import Pulse from 'react-reveal/Pulse';
+import { useHistory, useParams } from 'react-router-dom';
 import AboutUs from './AboutUs';
 import SinglePost from './posts/SinglePost';
 import AllPosts from './posts/AllPosts';
-
-import { useEffect, useState } from 'react';
 import { Alert } from '@material-ui/lab';
 import Flash from 'react-reveal/Flash';
 
 import { css } from "@emotion/react";
 import { ClipLoader, HashLoader } from "react-spinners";
 
-const useStyles = makeStyles({
-    card: {
-        width: "100%",
-        marginTop: "40px",
-        justifyContent: "center",
-        marginBottom: "40px",
-
+const useStyles = makeStyles((theme) => ({
+    createPost: {
+        borderRadius: "15px",
+        padding: "10px",
+        margin: "6px",
+        marginBottom: "16px",
     },
 
-});
+}));
 
 //! For Loading animation -> Start
 const override = css`
@@ -45,6 +44,7 @@ const LoadinAnimeStyle = { position: "fixed", top: "50%", left: "50%", transform
 const Home = () => {
     let [allPosts, setAllPosts] = useState([]);
     let [loading, setLoading] = useState(true);
+    let history = new useHistory();
 
 
     const getAllPosts = () => {
@@ -57,200 +57,98 @@ const Home = () => {
 
     }
 
-
-
     useEffect(() => {
         getAllPosts();
         document.title = "Student Portal - Home"
         console.log(allPosts);
-    }, []);
-    const classes = useStyles();
-    const [regMsg, setRegMsg] = useState("");
-
-    useEffect(() => {
 
         const search = window.location.search;
         const params = new URLSearchParams(search);
         const foo = params.get('msg');
         setRegMsg(foo)
-        // console.log(regMsg)
 
-    }, [])
+    }, []);
+
+    const handlePostCreate = () => {
+        history.push('/posts/create');
+    }
+
+
+    const classes = useStyles();
+    const [regMsg, setRegMsg] = useState("");
+
+
 
     return (
         <>
 
             <Header />
             <Container maxWidth="lg">
-            <Grid container spacing={1}>
-                <Grid item sm={8} xs={12}>
-                <div style={LoadinAnimeStyle}>
-                <HashLoader loading={loading} color='#39E1FA' size={200} css={override} />
-                </div>
-                {!loading && <>
-                    {allPosts.map(post=>{
-                        return(
-                            <Fade left>
-                            <AllPosts
-                            title={post.title}
-                            category={post.category.name}
-                            postUser={post.user.uname}
-                            postTime={post.created_at}
-                            body={post.pbody}
-                            view={post.views}
-                            comment={post.comments}
-                            
-                            /> 
-                            </Fade>
+                <Grid container spacing={1}>
+                    <Grid item sm={8} xs={12}>
 
-
-                        )
-                    })}
-                
-                </>}                   
-                
-                </Grid>
-                <Grid item sm={4} xs={12} >
-                    <Fade right>
-                        <AboutUs className={classes.card} />
-                    </Fade>
-                </Grid>
-            </Grid>
-            {/* <Container maxWidth="lg">
-                <Grid container justifyContent='center'>
-
-                    <Grid item xs={12}>
-                        <div>
-                            <Pulse>
-                                <Box style={{
-                                    backgroundImage: `url(${img})`,
-                                    backgroundSize: "cover",
-                                    height: '500px',
-                                    alignSelf: "center",
-                        
-                                }}>
-                                   
-                                </Box>
-                            </Pulse>
+                        <div style={LoadinAnimeStyle}>
+                            <HashLoader loading={loading} color='#39E1FA' size={150} css={override} />
                         </div>
-                    </Grid>
-                    <Grid item xs={5}>
+                        {!loading && <>
+                            {sessionStorage.getItem('uname') !== null ? <>
+                                <Grid container spacing={1}>
+                                    <Grid item sm={8} xs={12}>
+                                        <Paper elevation={4} className={classes.createPost}>
+                                            <Grid container spacing={8}>
+                                                <Grid item sm={1} xs={2}>
+                                                    <LetteredAvatar
+                                                        name={sessionStorage.getItem('uname')}
+                                                    />
+                                                </Grid>
+                                                <Grid item sm={7} xs={10}>
+                                                    <TextField
+                                                        id="postcreate"
+                                                        label=""
+                                                        value={"Type you question here..."}
+                                                        variant="outlined"
+                                                        size="small"
+                                                        onChange={handlePostCreate}
+                                                        onClick={handlePostCreate}
+                                                    />
 
-                        <div>
-                            <Fade left>
-                                <Card className={classes.card}>
-                                    <CardActionArea>
-                                        <CardMedia
-                                            component="img"
-                                            alt="Contemplative Reptile"
-                                            height="140"
-                                            image={card1}
-                                            title="Contemplative Reptile"
-                                        />
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                Lizard
-                                            </Typography>
-                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                                                across all continents except Antarctica
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                    <CardActions>
-                                        <Button size="small" color="primary">
-                                            Share
-                                        </Button>
-                                        <Button size="small" color="primary">
-                                            Learn More
-                                        </Button>
-                                    </CardActions>
-                                </Card>
-
-                            </Fade>
-                        </div>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-                    <Grid item xs={5} >
-
-                        <div>
-                            <Fade right>
-                                <Card className={classes.card}>
-                                    <CardActionArea>
-                                        <CardMedia
-                                            component="img"
-                                            alt="Contemplative Reptile"
-                                            height="140"
-                                            image={card2}
-                                            title="Contemplative Reptile"
-                                        />
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                Lizard
-                                            </Typography>
-                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                                                across all continents except Antarctica
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                    <CardActions>
-                                        <Button size="small" color="primary">
-                                            Share
-                                        </Button>
-                                        <Button size="small" color="primary">
-                                            Learn More
-                                        </Button>
-                                    </CardActions>
-                                </Card>
-                            </Fade>
-                        </div>
-                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        </Paper>
+                                    </Grid>
+                                </Grid>
 
 
-                    <Grid item xs={12} md={8}>
-                        <Fade up>
-
-                            {/* <AllPosts/> */}
-
-            {/* <HashLoader loading={loading} color='#39E1FA' size={200} css={override} /> */}
-
-            {/* {!loading && <>hello</>} */}
-            {/* {loading?<>hello</>:<>hello</>} */}
-            {/* {allPosts.map(post => {
+                            </> : <></>}
+                            {allPosts.map(post => {
                                 return (
-                                    // <AllPosts />
-                                    <>hello</>
+                                    <Fade left>
+                                        <AllPosts
+                                            title={post.title}
+                                            category={post.category.name}
+                                            postUser={post.user.uname}
+                                            postTime={post.created_at}
+                                            body={post.pbody}
+                                            view={post.views}
+                                            votes={post.upvotes.length-post.downvotes.length}
+                                            comment={post.comments.length}
+                                        />
+                                    </Fade>
+
+
                                 )
+                            })}
 
-                            })} */}
+                        </>}
 
-
-
-
-
-            {/* </Fade>
                     </Grid>
-                    {/* <Grid item md={1}/> */}
-            {/* <Grid item xs={12} md={4}>
-                        <Grid container justifyContent='flex-end'>
-
-                            <Fade right>
-                                <AboutUs className={classes.card} />
-                            </Fade>
-                        </Grid>
+                    <Grid item sm={4} xs={12} >
+                        <Fade right>
+                            <AboutUs/>
+                        </Fade>
                     </Grid>
-
-
-
                 </Grid>
-
-
-            </Container> */}
-
-
-
-</Container>
+            </Container>
 
             <Footer />
         </>
