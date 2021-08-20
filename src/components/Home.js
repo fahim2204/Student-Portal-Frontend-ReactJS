@@ -93,27 +93,27 @@ const Home = () => {
             <Header />
             <Container maxWidth="lg">
                 <Grid container spacing={1}>
-                    {regMsg === null ? null
-                        : <Grid item xs={12}>
-                            <Collapse in={open}>
-                                <Alert
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => {
-                                                setOpen(false);
-                                            }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                >
-                                    {regMsg}
-                                </Alert>
-                            </Collapse>
-                        </Grid>}
+                {regMsg === null ?  null 
+                    :<Grid item xs={12}>
+                        <Collapse in={open}>
+                            <Alert
+                                action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => {
+                                            setOpen(false);
+                                        }}
+                                    >
+                                        <CloseIcon fontSize="inherit" />
+                                    </IconButton>
+                                }
+                            >
+                                {regMsg}
+                            </Alert>
+                        </Collapse>
+                    </Grid>}
                     <Grid item sm={8} xs={12}>
                         <div style={LoadinAnimeStyle}>
                             <HashLoader loading={loading} color='#39E1FA' size={200} css={override} />
