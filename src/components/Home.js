@@ -7,6 +7,7 @@ import Fade from 'react-reveal/Fade';
 import img from './img.png';
 import card1 from './card1.jpg'
 import card2 from './card2.jpg'
+import Pulse from 'react-reveal/Pulse';
 
 const useStyles = makeStyles({
     card: {
@@ -36,7 +37,7 @@ const Home = () => {
                     <Grid item xs={12}>
 
                         <div>
-                            <Fade up>
+                            <Pulse>
                                 <Box style={{
                                     backgroundImage: `url(${img})`,
                                     backgroundSize: "cover",
@@ -49,7 +50,7 @@ const Home = () => {
                                         <Box color="text.primary">text.secondary</Box>
                                     </Typography> */}
                                 </Box>
-                            </Fade>
+                            </Pulse>
                         </div>
                     </Grid>
                     <Grid item xs={5}>
