@@ -276,7 +276,7 @@ const Edit = () => {
         setAccDlt(false);
         setAccDltMsg("");
      
-        // try {
+    
         axios.delete(`http://127.0.0.1:8000/api/profile/${uname}`, {data:{deletePassword: deletePassword}})
             .then(res => {
                 console.log(res.data.error);
@@ -294,9 +294,7 @@ const Edit = () => {
 
                 }
             })
-        // } catch (error) {
-        // console.log(error);
-        // }
+       
     }
 
     const classes = useStyles();
