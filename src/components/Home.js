@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Container from '@material-ui/core/Container'
 import LetteredAvatar from 'react-lettered-avatar';
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, makeStyles, Paper, Typography, TextField, Avatar } from '@material-ui/core';
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, makeStyles, Paper, Typography, TextField, Avatar, Collapse, IconButton } from '@material-ui/core';
 // import HomeCarousel from './HomeCarousel';
 // import { Helmet } from 'react-helmet'
 import Fade from 'react-reveal/Fade';
@@ -18,6 +18,7 @@ import SinglePost from './posts/SinglePost';
 import AllPosts from './posts/AllPosts';
 import { Alert } from '@material-ui/lab';
 import Flash from 'react-reveal/Flash';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { css } from "@emotion/react";
 import { ClipLoader, HashLoader } from "react-spinners";
@@ -76,7 +77,7 @@ const Home = () => {
 
     const classes = useStyles();
     const [regMsg, setRegMsg] = useState("");
-
+    const [open, setOpen] = useState(true);
 
 
     return (
@@ -85,6 +86,27 @@ const Home = () => {
             <Header />
             <Container maxWidth="lg">
                 <Grid container spacing={1}>
+                    {regMsg === null ? null
+                        : <Grid item xs={12}>
+                            <Collapse in={open}>
+                                <Alert
+                                    action={
+                                        <IconButton
+                                            aria-label="close"
+                                            color="inherit"
+                                            size="small"
+                                            onClick={() => {
+                                                setOpen(false);
+                                            }}
+                                        >
+                                            <CloseIcon fontSize="inherit" />
+                                        </IconButton>
+                                    }
+                                >
+                                    {regMsg}
+                                </Alert>
+                            </Collapse>
+                        </Grid>}
                     <Grid item sm={8} xs={12}>
 
                         <div style={LoadinAnimeStyle}>
@@ -131,7 +153,7 @@ const Home = () => {
                                             body={post.pbody}
                                             view={post.views}
                                             pid={post.id}
-                                            votes={post.upvotes.length-post.downvotes.length}
+                                            votes={post.upvotes.length - post.downvotes.length}
                                             comment={post.comments.length}
                                         />
                                     </Fade>
@@ -145,7 +167,7 @@ const Home = () => {
                     </Grid>
                     <Grid item sm={4} xs={12} >
                         <Fade right>
-                            <AboutUs/>
+                            <AboutUs />
                         </Fade>
                     </Grid>
                 </Grid>
