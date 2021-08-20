@@ -219,14 +219,15 @@ const Edit = () => {
 
 
 
-    const formSubmissionHandlerPassword = () => {
+    const formSubmissionHandlerPassword = (event) => {
+        event.preventDefault();
         let formData = new FormData()
         formData.append('oldPassword', oldPassword)
         formData.append('password', password)
         formData.append('cPassword', cpassword)
 
 
-        if (password === "" || cpassword === "" || password !== cpassword) {
+        if (password === "" || cpassword === "" || password !== cpassword || oldPassword==="") {
 
             if (!/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/.test(password)) {
                 setPasswordValidation("Password is not Valid")

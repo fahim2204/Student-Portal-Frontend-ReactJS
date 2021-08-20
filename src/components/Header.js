@@ -68,15 +68,15 @@ const Header = () => {
     return (
         <div>
             <Container maxWidth="lg">
-                <AppBar color='transparent' position='static' alignItems='center' justifyContent='center' elevation={0} style={{marginBottom: '10px'}}>
+                <AppBar color='transparent' position='static' alignItems='center' justifyContent='center' elevation={2} style={{marginBottom: '10px'}}>
                     {/* <Paper elevation={1}> */}
                     <Toolbar className={classes.toolbar} >
                         <Grid container spacing={3} alignItems='center' justifyContent='center' >
                             <Grid item xs>
-                                <Grid container alignItems='center' justify="flex-start">
-                                    <Grid xs={3} md={1}  >
+                                <Grid container alignItems='center' justifyContent="flex-start">
+                                    <Grid item xs={3} md={1}  >
                                         <IconButton
-                                            size="large"
+                                            size="medium"
                                             edge="start"
                                             color="inherit"
                                             aria-label="menu"
@@ -84,10 +84,10 @@ const Header = () => {
                                             <MenuIcon />
                                         </IconButton>
                                     </Grid>
-                                    <Grid xs={8} md={10} lg={8}>
+                                    <Grid item xs={8} md={10} lg={8}>
                                         <TextField size="small" style={{ width: '90%' }} type="search" variant="outlined" placeholder='Search' />
                                     </Grid>
-                                    <Grid xs={1} md={1}>
+                                    <Grid item xs={1} md={1}>
                                         <IconButton><SearchIcon /></IconButton>
                                     </Grid>
 
@@ -101,7 +101,7 @@ const Header = () => {
                             <Grid item xs>
                                 {sessionStorage.getItem('uname') === null &&
                                     <ThemeProvider theme={theme}>
-                                        <Grid container justify="flex-end">
+                                        <Grid container justifyContent="flex-end">
                                             <Grid style={{ marginRight: "4px" }}>
                                                 <Link to="/login" style={{ textDecoration: 'none' }}>
                                                     <Button size='small' variant="outlined" color="secondary" className={classes.btn}>
@@ -122,7 +122,7 @@ const Header = () => {
                                 }
                                 {sessionStorage.getItem('uname') !== null &&
 
-                                    <Grid container justify="flex-end" alignItems='center'>
+                                    <Grid container justifyContent="flex-end" alignitems='center'>
                                         <Grid style={{ marginRight: "4px" }} item xs={4} sm={3} md={2} lg={1}>
                                             <IconButton >
                                                 <NotificationsNoneOutlinedIcon />
