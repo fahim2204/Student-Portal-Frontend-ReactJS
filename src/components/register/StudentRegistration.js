@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Link, useHistory } from "react-router-dom";
 
 import SchoolOutlinedIcon from '@material-ui/icons/SchoolOutlined';
@@ -15,6 +15,9 @@ import { Grid, TextField, Paper, Button } from '@material-ui/core';
 import axios from 'axios';
 
 const StudentRegistration = (props) => {
+
+    useEffect(() => {document.title = "Student Portal - Student Registration"}, []);
+
 
     const paperStyle = { padding: "50px", width: "60%", maxWidth: "600px", minWidth: "300px", margin: "auto", marginTop: "5%", marginBottom: "5%" }
     const headerStyle = { margin: '10px' }

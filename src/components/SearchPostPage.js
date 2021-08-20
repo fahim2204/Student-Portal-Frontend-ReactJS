@@ -46,11 +46,11 @@ const Home = () => {
     let [allPosts, setAllPosts] = useState([]);
     let [loading, setLoading] = useState(true);
     let history = new useHistory();
+    let { text } = useParams();
 
 
     const getAllPosts = () => {
-
-        axios.get(`http://127.0.0.1:8000/api/post`)
+        axios.get(`http://127.0.0.1:8000/api/posts/search/${text}`)
             .then(res => {
                 setAllPosts(res.data);
                 setLoading(false);
@@ -60,7 +60,7 @@ const Home = () => {
 
     useEffect(() => {
         getAllPosts();
-        document.title = "Student Portal - Home"
+        document.title = "Student Portal - Search By Title"
         console.log(allPosts);
 
         const search = window.location.search;
@@ -83,65 +83,14 @@ const Home = () => {
     return (
         <>
 
-            <Header />
             <div style={LoadinAnimeStyle}>
                 <HashLoader loading={loading} color='#39E1FA' size={150} css={override} />
             </div>
             {!loading && <>
+                <Header />
                 <Container maxWidth="lg">
-                    <Grid container spacing={1}>
-                        {regMsg === null ? null
-                            : <Grid item xs={12}>
-                                <Collapse in={open}>
-                                    <Alert
-                                        action={
-                                            <IconButton
-                                                aria-label="close"
-                                                color="inherit"
-                                                size="small"
-                                                onClick={() => {
-                                                    setOpen(false);
-                                                }}
-                                            >
-                                                <CloseIcon fontSize="inherit" />
-                                            </IconButton>
-                                        }
-                                    >
-                                        {regMsg}
-                                    </Alert>
-                                </Collapse>
-                            </Grid>}
-                        <Grid item sm={8} xs={12}>
-
-                            {sessionStorage.getItem('uname') !== null ? <>
-                                <Grid container spacing={1}>
-                                    <Grid item sm={8} xs={12}>
-                                        <Paper elevation={4} className={classes.createPost}>
-                                            <Grid container spacing={8}>
-                                                <Grid item sm={1} xs={2}>
-                                                    <LetteredAvatar
-                                                        name={sessionStorage.getItem('uname')}
-                                                    />
-                                                </Grid>
-                                                <Grid item sm={7} xs={10}>
-                                                    <TextField
-                                                        id="postcreate"
-                                                        label=""
-                                                        value={"Type you question here..."}
-                                                        variant="outlined"
-                                                        size="small"
-                                                        onChange={handlePostCreate}
-                                                        onClick={handlePostCreate}
-                                                    />
-
-                                                </Grid>
-                                            </Grid>
-                                        </Paper>
-                                    </Grid>
-                                </Grid>
-
-
-                            </> : <></>}
+                    <Grid container spacing={1} justifyContent="center">
+                        <Grid item sm={9} xs={12}>
                             {allPosts.map(post => {
                                 return (
                                     <Fade left>
@@ -163,11 +112,6 @@ const Home = () => {
                             })}
 
 
-                        </Grid>
-                        <Grid item sm={4} xs={12} >
-                            <Fade right>
-                                <AboutUs />
-                            </Fade>
                         </Grid>
                     </Grid>
                 </Container>

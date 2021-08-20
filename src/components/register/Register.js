@@ -1,9 +1,10 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Link } from "react-router-dom";
 
 import { Grid, Paper, Avatar, Button } from '@material-ui/core';
 
 const Registration = (props) => {
+    useEffect(() => {document.title = "Student Portal - Registration"}, []);
 
   var rootStyle= {
     position: 'absolute',

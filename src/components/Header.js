@@ -107,13 +107,11 @@ const theme = createTheme({
 
 const Header = () => {
 
-    // let [categories, setCategories] = useState([]);
-
 
     const [open, setOpen] = useState(false);
-
-
     const history = new useHistory();
+    const [searchText, setSearchText] = useState("");
+
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -138,39 +136,29 @@ const Header = () => {
         setOpen(false);
     };
 
-
-    // const getCategory = () => {
-    //     axios.get(`http://127.0.0.1:8000/api/categories`)
-    //         .then(res => {
-    //             setCategories(res.data);
-    //             console.log(res.data);
-    //         });
-    // }
-    // React.useEffect(() => {
-    //     getCategory();
-
-    // }, [])
+    
     let [categories, setCategories] = useState([]);
-
+    
     const getCategory = () => {
         axios.get(`http://127.0.0.1:8000/api/categories`)
-            .then(res => {
-                setCategories(res.data);
-                // setLoading(false);
-                console.log(res.data);
-            });
+        .then(res => {
+            setCategories(res.data);
+            // setLoading(false);
+            console.log(res.data);
+        });
     }
-
+    
     useEffect(() => {
         getCategory();
 
     }, [])
-
-
-
-
-
-
+    
+    const handleSearchText = event => {
+        setSearchText(event.target.value);
+    };
+    const handleSearchPost = event => {
+        history.push(`/posts/search/${searchText}`);
+    };
     const classes = useStyles();
 
     return (
@@ -199,10 +187,10 @@ const Header = () => {
                                         </IconButton>
                                     </Grid>
                                     <Grid item xs={8} md={10} lg={8}>
-                                        <TextField size="small" style={{ width: '90%' }} type="search" variant="outlined" placeholder='Search' />
+                                        <TextField size="small" style={{ width: '90%' }} onChange={handleSearchText} type="search" variant="outlined" placeholder='Search By Title' />
                                     </Grid>
                                     <Grid item xs={1} md={1}>
-                                        <IconButton><SearchIcon /></IconButton>
+                                        <IconButton><SearchIcon onClick={handleSearchPost}/></IconButton>
                                     </Grid>
 
                                 </Grid>

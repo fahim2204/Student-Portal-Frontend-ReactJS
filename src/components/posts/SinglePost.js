@@ -235,7 +235,7 @@ const SinglePost = () => {
                                 <Grid item xs={9} md={10} lg={11}>
                                     <TextField
                                         style={{ width: "100%" }}
-                                        id="outlined-multiline-static"
+                                        id="ctext"
                                         label="Add Comment"
                                         multiline
                                         required

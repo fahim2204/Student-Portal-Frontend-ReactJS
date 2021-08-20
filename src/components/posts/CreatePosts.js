@@ -39,6 +39,7 @@ const CreatePosts = () => {
     }
 
     useEffect(() => {
+        document.title = "Student Portal - Create Post"
         getCategory();
 
     }, [])
@@ -94,11 +95,11 @@ const CreatePosts = () => {
                 {!loading && <>
                     <div>
                         <Header />
-                        <Container maxWidth="lg">
+                        <Container maxWidth="md">
                             <Grid container spacing={3} justifyContent="center">
                                 <Grid item xs={12}>
                                     <form onSubmit={formSubmissionCreatePost}>
-                                        <Paper className={classes.paper}>
+                                        <Paper className={classes.paper} elevation={5}>
                                             <h1>Create Post</h1>
                                             <FormControl required variant="outlined" className={classes.formControl}>
                                                 <InputLabel >Category</InputLabel>

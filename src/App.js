@@ -1,5 +1,7 @@
 import React from 'react';
 import Home from './components/Home'
+import CategoryPage from './components/CategoryPage'
+import SearchPostPage from './components/SearchPostPage'
 import Login from './components/Login'
 import Register from './components/register/Register'
 import InstructorRegistration from './components/register/InstructorRegistration'
@@ -46,6 +48,12 @@ function App() {
           </Route>
           <Route exact path="/post/:id">
               <SinglePost/>
+          </Route>
+          <Route exact path="/posts/:cat">
+              <CategoryPage/>
+          </Route>
+          <Route exact path="/posts/search/:text">
+              <SearchPostPage/>
           </Route>
         </Switch>
       </Router>

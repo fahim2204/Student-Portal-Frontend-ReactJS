@@ -86,6 +86,7 @@ const View = (props) => {
     }
 
     useEffect(() => {
+        document.title = "Student Portal - Profile"
         getProfileData();
 
     }, [])

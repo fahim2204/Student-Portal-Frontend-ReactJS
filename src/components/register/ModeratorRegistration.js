@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Link, useHistory } from "react-router-dom";
 
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -15,6 +15,9 @@ import axios from 'axios';
 
 
 const ModeratorRegistration = (props) => {
+
+    useEffect(() => {document.title = "Student Portal - Moderator Registration"}, []);
+
 
     const paperStyle = { padding: "50px", width: "60%", maxWidth: "600px", minWidth: "300px", margin: "auto", marginTop: "5%", marginBottom: "5%" }
     const txtField = { width: "80%", margin: "10px auto" }

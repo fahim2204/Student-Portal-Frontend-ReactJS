@@ -74,7 +74,7 @@ const Login = (props) => {
     const errorMessageColor = { color: "red", padding: "10px" }
     const regMsgColor = { color: "green", padding: "10px" }
     useEffect(() => {
-
+        document.title = "Student Portal - Login"
         const search = window.location.search;
         const params = new URLSearchParams(search);
         const foo = params.get('msg');

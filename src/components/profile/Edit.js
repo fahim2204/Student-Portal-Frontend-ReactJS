@@ -111,6 +111,7 @@ const Edit = () => {
 
 
     useEffect(() => {
+        document.title = "Student Portal - Profile Edit"
 
         axios.get(`http://127.0.0.1:8000/api/profile/${uname}`)
             .then(res => {
