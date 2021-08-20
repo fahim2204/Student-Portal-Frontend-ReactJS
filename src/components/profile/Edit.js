@@ -95,11 +95,13 @@ const Edit = () => {
     const [nameValidation, setNameValidation] = useState("");
     const [passwordValidation, setPasswordValidation] = useState("");
     const [cpasswordValidation, setCpasswordValidation] = useState("");
+    const [oldPasswordValidation, setOldPasswordValidation] = useState("");
     const [emailValidation, setEmailValidation] = useState("");
     const [contactValidation, setContactValidation] = useState("");
     const [addressValidation, setAddressValidation] = useState("");
     const [nameValidationText, setNameValidationText] = useState(false);
     const [passwordValidationText, setPasswordValidationText] = useState(false);
+    const [oldPasswordValidationText, setOldPasswordValidationText] = useState(false);
     const [cpasswordValidationText, setCpasswordValidationText] = useState(false);
     const [emailValidationText, setEmailValidationText] = useState(false);
     const [contactValidationText, setContactValidationText] = useState(false);
@@ -154,7 +156,7 @@ const Edit = () => {
     let history = useHistory();
 
 
-    const formSubmissionHandlerBasic = async (event) => {
+    const formSubmissionHandlerBasic = (event) => {
         event.preventDefault();
 
         let formData = new FormData()
@@ -206,11 +208,11 @@ const Edit = () => {
             setNameValidationText(false)
 
             try {
-                await axios.post(`http://127.0.0.1:8000/api/profile/basic/${uname}`, formData);
+            axios.post(`http://127.0.0.1:8000/api/profile/basic/${uname}`, formData);
             } catch (error) {
                 console.log(error);
             }
-            history.push(`/profile/${uname}`)
+            history.push(`/profile/${uname}?msg=Update%20Success`)
             // history.push(`/profile/${uname}?msg=Update%20Success`)
         }
 
@@ -219,14 +221,15 @@ const Edit = () => {
 
 
 
-    const formSubmissionHandlerPassword = () => {
+    const formSubmissionHandlerPassword = (event) => {
+        event.preventDefault();
         let formData = new FormData()
         formData.append('oldPassword', oldPassword)
         formData.append('password', password)
         formData.append('cPassword', cpassword)
 
 
-        if (password === "" || cpassword === "" || password !== cpassword) {
+        if (password === "" || cpassword === "" || password !== cpassword || oldPassword === "") {
 
             if (!/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/.test(password)) {
                 setPasswordValidation("Password is not Valid")
@@ -242,6 +245,14 @@ const Edit = () => {
                 setCpasswordValidation("")
                 setCpasswordValidationText(false)
             }
+            if (oldPassword === "") {
+                setPassErrMsg("Please enter your old password")
+                setPassErr(true)
+            } else {
+                setPassErrMsg("")
+                setPassErr(false)
+            }
+
         }
         else {
 
@@ -252,6 +263,8 @@ const Edit = () => {
             setPassErrMsg("")
             setPassErr(false)
             setSucceessMessege("")
+            setOldPasswordValidation("")
+            setOldPasswordValidationText(false)
 
             axios.post(`http://127.0.0.1:8000/api/profile/password/${uname}`, formData)
                 .then(res => {
@@ -424,6 +437,7 @@ const Edit = () => {
                                         label="Old Password"
                                         error={passErr}
                                         type="password"
+                                        helperText={passErrMsg}
                                         variant="outlined"
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,

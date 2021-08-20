@@ -11,6 +11,9 @@ import Pulse from 'react-reveal/Pulse';
 import AboutUs from './AboutUs';
 import SinglePost from './posts/SinglePost';
 import AllPosts from './posts/AllPosts';
+import { useEffect, useState } from 'react';
+import { Alert } from '@material-ui/lab';
+import Flash from 'react-reveal/Flash';
 
 const useStyles = makeStyles({
     card: {
@@ -20,12 +23,23 @@ const useStyles = makeStyles({
         marginBottom: "40px",
 
     },
-    
+
 });
 
 const Home = () => {
 
     const classes = useStyles();
+    const [regMsg, setRegMsg] = useState("");
+
+    useEffect(() => {
+
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        const foo = params.get('msg');
+        setRegMsg(foo)
+        // console.log(regMsg)
+
+    }, [])
 
     return (
         <>
@@ -38,6 +52,16 @@ const Home = () => {
                 {sessionStorage.getItem('id')}
 
                 <Grid container justify='center'>
+                    {regMsg === null ?
+                        null
+                        :
+                        <Grid item xs={12}>
+                            <Flash>
+                                <Alert severity="success">{regMsg}</Alert>
+                            </Flash>
+                        </Grid>
+
+                    }
                     <Grid item xs={12}>
 
                         <div>
@@ -134,15 +158,15 @@ const Home = () => {
 
                     <Grid item xs={12} md={8}>
                         <Fade up>
-                           <AllPosts/>
+                            <AllPosts />
                         </Fade>
                     </Grid>
                     {/* <Grid item md={1}/> */}
                     <Grid item xs={12} md={4}>
                         <Grid container justify='flex-end'>
-                        <Fade right>
-                            <AboutUs className={classes.card}/>
-                        </Fade>
+                            <Fade right>
+                                <AboutUs className={classes.card} />
+                            </Fade>
                         </Grid>
                     </Grid>
 
@@ -154,7 +178,7 @@ const Home = () => {
             </Container>
 
 
-            <Footer/>
+            <Footer />
         </>
     );
 };

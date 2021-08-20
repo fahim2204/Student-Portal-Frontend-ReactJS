@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { css } from "@emotion/react";
 import { ClipLoader, HashLoader } from "react-spinners";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Header from './../Header';
 
 
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const CreatePosts = () => {
-
+    let history = useHistory();
     let [loading, setLoading] = useState(true);
     let [categories, setCategories] = useState([]);
 
@@ -33,6 +33,8 @@ const CreatePosts = () => {
             .then(res => {
                 setCategories(res.data);
                 setLoading(false);
+                // console.log(res);
+                
             });
     }
 
@@ -75,6 +77,7 @@ const CreatePosts = () => {
         formData.append('uid', uid)
         try {
             await axios.post(`http://127.0.0.1:8000/api/create/post`, formData);
+            history.push("/?msg=Post%20Created")
         } catch (error) {
             console.log(error);
         }
