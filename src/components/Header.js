@@ -1,4 +1,3 @@
-
 import { AppBar, Box, Grid, IconButton, Toolbar, Paper, TextField, Typography, Button, makeStyles, createTheme, ThemeProvider, MenuItem, Container } from '@material-ui/core';
 import * as React from 'react';
 
@@ -145,9 +144,20 @@ const Header = () => {
                                                 <Link to={`/profile/${sessionStorage.getItem('uname')}`} style={{ textDecoration: 'none' }}>
                                                     <MenuItem onClick={handleClose}>Profile</MenuItem>
                                                 </Link>
+                                                {sessionStorage.getItem('type') === 'moderator' &&
+                                                    <Link to={{ pathname: "http://localhost:3001/" }} target="_blank" style={{ textDecoration: 'none' }}>
+                                                        <MenuItem onClick={handleClose}>{`${sessionStorage.getItem('type')}`} panel</MenuItem>
+                                                    </Link>
+                                                }
+                                                {sessionStorage.getItem('type') === 'admin' &&
+                                                    <Link to={{ pathname: "http://localhost:3001/" }} target="_blank"  style={{ textDecoration: 'none' }}>
+                                                        <MenuItem onClick={handleClose}>{`${sessionStorage.getItem('type')}`} panel</MenuItem>
+                                                    </Link>
+                                                }
                                                 {/* <Link to="#" style={{ textDecoration: 'none' }}> */}
                                                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                                 {/* </Link> */}
+                                                
 
 
                                             </Menu>
