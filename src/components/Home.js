@@ -130,6 +130,7 @@ const Home = () => {
                                             postTime={post.created_at}
                                             body={post.pbody}
                                             view={post.views}
+                                            pid={post.id}
                                             votes={post.upvotes.length-post.downvotes.length}
                                             comment={post.comments.length}
                                         />

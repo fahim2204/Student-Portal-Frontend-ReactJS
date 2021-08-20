@@ -84,9 +84,11 @@ const AllPosts = (props) => {
                     <h2>{props.title}</h2>
                 </Grid>
                 <Grid container spacing={1}>
-                    <Typography variant="body1" color="initial">
-                        <ReadMoreReact text={props.body} />
-                    </Typography>
+                    <Link to={`/post/${props.pid}`} style={{ textDecoration: 'none',color:'black' }}>
+                        <Typography variant="body1" color="initial">
+                            <ReadMoreReact text={props.body} />
+                        </Typography>
+                    </Link>
                 </Grid>
                 <Grid container spacing={1} className={classes.postsFooter} alignItems="center">
                     <Grid item xs={6} sm={5} md={4} lg={2}>
@@ -103,15 +105,15 @@ const AllPosts = (props) => {
                     </Grid>
                     <Grid item xs={2} sm={2} lg={1}>
 
-                    <Grid container spacing={1} alignItems="center">
+                        <Grid container spacing={1} alignItems="center">
                             <Grid item>
                                 <CommentOutlinedIcon />
                             </Grid>
                             <Grid item>
-                                    {props.comment}
+                                {props.comment}
                             </Grid>
                         </Grid>
-                      
+
                     </Grid>
                     <Grid item xs={2} sm={2} lg={1} justifyContent="center" >
                         <Grid container spacing={1} alignItems="center">
@@ -119,7 +121,7 @@ const AllPosts = (props) => {
                                 <VisibilityOutlinedIcon />
                             </Grid>
                             <Grid item>
-                                    {props.view}
+                                {props.view===null? 0 :props.view}
                             </Grid>
                         </Grid>
 

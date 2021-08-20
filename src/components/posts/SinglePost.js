@@ -1,6 +1,6 @@
-import { Box, Chip, Container, Fab, Grid, IconButton, makeStyles, Paper, TextField } from '@material-ui/core';
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Box, Chip, Container, Fab, Grid, IconButton, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
+import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
@@ -11,26 +11,75 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import SendIcon from '@material-ui/icons/Send';
 import FaceIcon from '@material-ui/icons/Face';
-
+import { css } from "@emotion/react";
+import { ClipLoader, HashLoader } from "react-spinners";
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 import Comments from './Comments';
+import Header from './../Header';
+//? Time Format Change
+import TimeAgo from 'javascript-time-ago'
+import ReactTimeAgo from 'react-time-ago'
+import en from 'javascript-time-ago/locale/en'
 
 
 const useStyles = makeStyles((theme) => ({
-
     paper: {
         padding: theme.spacing(2),
-        // textAlign: 'center',
+        borderRadius: "10px",
         color: theme.palette.text.secondary,
-        margin: theme.spacing(5),
+        marginBottom: theme.spacing(3),
+        // margin: theme.spacing(5),
     },
+    postsHeader: {
+        marginTop: "-10px",
+        marginBottom: "5px",
+        borderBottom: "1px solid #e1e8e3"
+    },
+    postsFooter: {
+        marginTop: "8px",
+        marginBottom: "-15px",
+        borderTop: "1px solid #e1e8e3"
+    }
 
 }));
-
+//! For Loading animation -> Start
+const override = css`
+display: block;
+margin: 0 auto;
+border-color: green;
+`;
+const LoadinAnimeStyle = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
+//! For Loading animation -> End
 
 
 const SinglePost = () => {
 
+
+    let { id } = useParams();
+    let [allPosts, setAllPosts] = useState([]);
+    let [loading, setLoading] = useState(true);
+    let history = new useHistory();
+    let [comment, setcomment] = useState([]);
+    TimeAgo.addDefaultLocale(en)
+
+    const getAllPosts = () => {
+
+        axios.get(`http://127.0.0.1:8000/api/posts/${id}`)
+            .then(res => {
+                setAllPosts(res.data.post);
+                setcomment(res.data.comments);
+                setLoading(false);
+            });
+
+    }
+
+    useEffect(() => {
+        getAllPosts();
+        document.title = "Student Portal - Post View"
+        console.log(allPosts);
+    }, []);
 
 
     const classes = useStyles();
@@ -42,20 +91,6 @@ const SinglePost = () => {
         setVote(status);
     };
 
-    const [comment, setcomment] = useState(
-        [{
-
-            body: "body from db",
-            username: "username from db",
-            time: "time from db",
-        },
-        {
-            body: "body from db",
-            username: "username from db",
-            time: "time from db",
-        }
-        ]
-    );
 
 
     let allComments = (
@@ -64,9 +99,9 @@ const SinglePost = () => {
 
                 return (
                     <Comments
-                        body={comment.body}
-                        username={comment.username}
-                        time={comment.time} />
+                        body={comment.ctext}
+                        username={comment.user.uname}
+                        time={comment.created_at} />
                 )
 
             })}
@@ -76,65 +111,54 @@ const SinglePost = () => {
 
 
     return (
-        <div>
-            {/* <Container maxWidth="lg"> */}
+        <>
+         <div style={LoadinAnimeStyle}>
+                <HashLoader loading={loading} color='#39E1FA' size={200} css={override} />
+            </div>
+            {!loading && <>
+            <Header />
+            <Container maxWidth="lg">
                 <Grid container spacing={2} justifyContent="center" >
                     <Grid item xs={12} sm={8}>
-                        <Paper className={classes.paper} elevation={5}>
-
-
-
-                            <Grid container spacing={1}>
-
-                                <Grid item xs={4} md={3} lg={2}>
-                                    <b>Post category</b>
+                        <Paper className={classes.paper} elevation={4}>
+                            <Grid container spacing={1} className={classes.postsHeader}>
+                                <Grid item>
+                                    {allPosts.category.name}
                                 </Grid>
-
-                                <Grid item xs={4} md={3} lg={2}>
-                                    <Link to="#" style={{ textDecoration: 'none' }}>
+                                <Grid item>
+                                    <Typography variant="caption" color="textSecondary"> Posted By</Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Link to={`/profile/${allPosts.user.uname}`} style={{ textDecoration: 'none' }}>
                                         <Chip
                                             size="small"
                                             icon={<FaceIcon />}
-                                            label="username"
+                                            label={allPosts.user.uname}
                                             clickable
                                             color="primary"
                                             variant="outlined"
                                         />
                                     </Link>
                                 </Grid>
-
-                                <Grid item xs={4} md={3} lg={2}>
-                                    <Box color="success.main"><b>post date</b></Box>
+                                <Grid item>
+                                    <ReactTimeAgo date={allPosts.created_at} locale="en-US" />
                                 </Grid>
-                                <Grid item xs={1} md={1} lg={4} />
-                                <Grid item xs={12} md={2} lg={2}>
-                                    <IconButton size="small" aria-label="delete" className={classes.margin}>
-                                        <EditIcon />
-                                    </IconButton>
-
-                                    <IconButton size="small" aria-label="delete" className={classes.margin}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Grid>
-                                <br /><br />
-
                             </Grid>
-                            <hr />
-                            <Grid item xs={12}>
-                                <h2>Post title here</h2>
-                            </Grid>
-                            <Grid item xs={12}>
-                                post Content
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            </Grid>
-                            <br /><hr />
-
                             <Grid container spacing={1}>
+                                <h2>{allPosts.title}</h2>
+                            </Grid>
+                            <Grid container spacing={1}>
+                                <Link to={`/post/fgf`} style={{ textDecoration: 'none', color: 'black' }}>
+                                    <Typography variant="body1" color="initial">
+                                       {allPosts.pbody}
+                                    </Typography>
+                                </Link>
+                            </Grid>
+                            <Grid container spacing={1} className={classes.postsFooter} alignItems="center">
                                 <Grid item xs={6} sm={5} md={4} lg={2}>
-
-                                    <ToggleButtonGroup value={vote} exclusive onChange={handleVote}>
+                                    <ToggleButtonGroup size="small" value={vote} color="primary" onChange={handleVote}>
                                         <ToggleButton value="upvote" aria-label="upvote">
-                                            <ArrowUpwardOutlinedIcon />100
+                                            <ArrowUpwardOutlinedIcon />{allPosts.upvotes.length-allPosts.downvotes.length}
                                         </ToggleButton>
                                         <ToggleButton value="downvote" aria-label="downvote">
                                             <ArrowDownwardOutlinedIcon />
@@ -145,38 +169,33 @@ const SinglePost = () => {
                                 </Grid>
                                 <Grid item xs={2} sm={2} lg={1}>
 
-                                    <div>
-                                        <CommentOutlinedIcon />
-                                    </div>
-                                    <div>
-                                        num
-                                    </div>
+                                    <Grid container spacing={1} alignItems="center">
+                                        <Grid item>
+                                            <CommentOutlinedIcon />
+                                        </Grid>
+                                        <Grid item>
+                                           {allPosts.comments.length}
+                                        </Grid>
+                                    </Grid>
 
                                 </Grid>
-                                <Grid item xs={2} sm={2} lg={1}>
-
-                                    <div>
-                                        <VisibilityOutlinedIcon />
-                                    </div>
-                                    <div>
-                                        num
-                                    </div>
+                                <Grid item xs={2} sm={2} lg={1} justifyContent="center" >
+                                    <Grid container spacing={1} alignItems="center">
+                                        <Grid item>
+                                            <VisibilityOutlinedIcon />
+                                        </Grid>
+                                        <Grid item>
+                                        {allPosts.views===null? 0 : allPosts.views}
+                                        </Grid>
+                                    </Grid>
 
                                 </Grid>
-
-
-
-
                             </Grid>
-
-
                         </Paper>
 
 
 
                         {/* comment section */}
-
-
 
                         <Paper className={classes.paper} elevation={3}>
                             <Grid container spacing={3}>
@@ -186,37 +205,27 @@ const SinglePost = () => {
                                         id="outlined-multiline-static"
                                         label="Add Comment"
                                         multiline
-                                        // rows={2}
-                                        // defaultValue="Default Value"
                                         variant="outlined"
                                     />
-
                                 </Grid>
                                 <Grid item xs={3} md={2} lg={1}>
                                     <Fab color="primary" aria-label="add" className={classes.margin}>
                                         <SendIcon />
                                     </Fab>
-
                                 </Grid>
-                                {/* <Grid item xs={1} /> */}
-
-
                                 <Grid item xs={12}>
                                     <h3>Comments</h3>
                                 </Grid>
-
                                 <Grid item xs={12}>
                                     {allComments}
                                 </Grid>
-
                             </Grid>
-
                         </Paper>
-
                     </Grid>
                 </Grid>
-            {/* </Container> */}
-        </div >
+            </Container>
+            </>}
+        </>
     )
 }
 

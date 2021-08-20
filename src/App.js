@@ -44,7 +44,7 @@ function App() {
           <Route exact path="/posts/create">
               <CreatePosts/>
           </Route>
-          <Route exact path="/posts/id">
+          <Route exact path="/post/:id">
               <SinglePost/>
           </Route>
         </Switch>

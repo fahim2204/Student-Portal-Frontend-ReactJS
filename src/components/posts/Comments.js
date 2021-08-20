@@ -1,6 +1,10 @@
 import { Box, Divider, Grid, makeStyles, Paper } from '@material-ui/core';
 import React from 'react'
 import { Link } from 'react-router-dom';
+//? Time Format Change
+import TimeAgo from 'javascript-time-ago'
+import ReactTimeAgo from 'react-time-ago'
+import en from 'javascript-time-ago/locale/en'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -16,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+TimeAgo.addDefaultLocale(en)
+
 const Comments = (props) => {
     const classes = useStyles();
     return (
@@ -23,27 +29,21 @@ const Comments = (props) => {
             <Paper className={classes.paper} elevation={2}>
                 <Grid container spacing={2} >
                     <Grid item xs={6}>
-                        <Link to="#" style={{ textDecoration: 'none' }}>
+                        <Link to={`/profile/${props.username}`} style={{ textDecoration: 'none' }}>
                             <b>
                                 <Box color="success.main">@{props.username}
                                 </Box>
                             </b>
                         </Link>
                     </Grid>
-
                     <Grid item xs={6} >
-
                         <Box color="info.main">
-                            <b>
-                            @{props.time}
-                            </b>
+                            <ReactTimeAgo date={props.time} locale="en-US" />
                         </Box>
                     </Grid>
                     <Grid item xs={12} >
                         {props.body}
                     </Grid>
-
-
                 </Grid>
             </Paper>
         </div>
