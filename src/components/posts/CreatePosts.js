@@ -34,7 +34,6 @@ const CreatePosts = () => {
                 setCategories(res.data);
                 setLoading(false);
             });
-
     }
 
     useEffect(() => {

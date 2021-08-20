@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { Button, Grid, InputAdornment, TextField } from '@material-ui/core';
+import { Button, Grid, InputAdornment, TextField, Container } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import axios from 'axios';
@@ -15,6 +15,7 @@ import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import PhoneIcon from '@material-ui/icons/Phone';
 import ContactMailOutlinedIcon from '@material-ui/icons/ContactMailOutlined';
 import { useHistory, useParams } from 'react-router-dom';
+import Header from './../Header';
 
 function TabPanel(props) {
 
@@ -110,13 +111,13 @@ const Edit = () => {
     useEffect(() => {
 
         axios.get(`http://127.0.0.1:8000/api/profile/${uname}`)
-        .then(res => {
-            setname(res.data.profileInfo!==null ? res.data.profileInfo.name:'UNKNOWN')
-            setEmail(res.data.profileInfo!==null ? res.data.profileInfo.email:'UNKNOWN')
-            setContact(res.data.profileInfo!==null ? res.data.profileInfo.contact:'UNKNOWN')
-            setAddress(res.data.profileInfo!==null ? res.data.profileInfo.address:'UNKNOWN')
-        });
-        
+            .then(res => {
+                setname(res.data.profileInfo !== null ? res.data.profileInfo.name : 'UNKNOWN')
+                setEmail(res.data.profileInfo !== null ? res.data.profileInfo.email : 'UNKNOWN')
+                setContact(res.data.profileInfo !== null ? res.data.profileInfo.contact : 'UNKNOWN')
+                setAddress(res.data.profileInfo !== null ? res.data.profileInfo.address : 'UNKNOWN')
+            });
+
         const search = window.location.search;
         const params = new URLSearchParams(search);
         const foo = params.get('msg');
@@ -275,16 +276,16 @@ const Edit = () => {
         event.preventDefault();
         setAccDlt(false);
         setAccDltMsg("");
-     
-    
-        axios.delete(`http://127.0.0.1:8000/api/profile/${uname}`, {data:{deletePassword: deletePassword}})
+
+
+        axios.delete(`http://127.0.0.1:8000/api/profile/${uname}`, { data: { deletePassword: deletePassword } })
             .then(res => {
                 console.log(res.data.error);
                 if (res.data.error === "Enter a Password") {
                     setAccDlt(true);
                     setAccDltMsg("Enter a Password");
                 }
-                else if(res.data.error === "Password is Incorrect") {
+                else if (res.data.error === "Password is Incorrect") {
                     setAccDlt(true);
                     setAccDltMsg("Password is Incorrect");
                 }
@@ -294,7 +295,7 @@ const Edit = () => {
 
                 }
             })
-       
+
     }
 
     const classes = useStyles();
@@ -305,230 +306,232 @@ const Edit = () => {
     };
 
     return (
-        <div>
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Tabs
-                        variant="fullWidth"
-                        value={value}
-                        onChange={handleChange}
-                        aria-label="nav tabs example"
-                    >
-                        <LinkTab label="Basic Info" href="/drafts" {...a11yProps(0)} />
-                        <LinkTab label="Password" href="/trash" {...a11yProps(1)} />
-                        <LinkTab label="Delete Account" href="/spam" {...a11yProps(2)} />
-                    </Tabs>
-                </AppBar>
+        <>
+            <Header />
+            <Container maxWidth="lg">
 
-                <TabPanel value={value} index={0}>
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <form className="submit" onSubmit={formSubmissionHandlerBasic}>
+                <div className={classes.root}>
+                    <AppBar position="static">
+                        <Tabs
+                            variant="fullWidth"
+                            value={value}
+                            onChange={handleChange}
+                            aria-label="nav tabs example"
+                        >
+                            <LinkTab label="Basic Info" href="/drafts" {...a11yProps(0)} />
+                            <LinkTab label="Password" href="/trash" {...a11yProps(1)} />
+                            <LinkTab label="Delete Account" href="/spam" {...a11yProps(2)} />
+                        </Tabs>
+                    </AppBar>
 
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={nameValidationText}
-                                    value={name}
-                                    label="Full Name"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><PersonIcon /></InputAdornment>,
-                                    }}
-                                    onChange={nameInputChangeHandler}
-                                    helperText={nameValidation}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid item xs={12}>
-                                <TextField
+                    <TabPanel value={value} index={0}>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <form className="submit" onSubmit={formSubmissionHandlerBasic}>
 
-                                    error={emailValidationText}
-                                    value={email}
-                                    label="Email"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><EmailOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={emailInputChangeHandler}
-                                    helperText={emailValidation}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={contactValidationText}
-                                    value={contact}
-                                    label="Contact No."
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><PhoneIcon /></InputAdornment>,
-                                    }}
-                                    onChange={contactInputChangeHandler}
-                                    helperText={contactValidation}
-                                />
-                            </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={nameValidationText}
+                                        value={name}
+                                        label="Full Name"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><PersonIcon /></InputAdornment>,
+                                        }}
+                                        onChange={nameInputChangeHandler}
+                                        helperText={nameValidation}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid item xs={12}>
+                                    <TextField
 
-                            <br />
+                                        error={emailValidationText}
+                                        value={email}
+                                        label="Email"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><EmailOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={emailInputChangeHandler}
+                                        helperText={emailValidation}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={contactValidationText}
+                                        value={contact}
+                                        label="Contact No."
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><PhoneIcon /></InputAdornment>,
+                                        }}
+                                        onChange={contactInputChangeHandler}
+                                        helperText={contactValidation}
+                                    />
+                                </Grid>
 
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={addressValidationText}
-                                    value={address}
-                                    label="Address"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><ContactMailOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={addressInputChangeHandler}
-                                    helperText={addressValidation}
-                                />
-                            </Grid>
+                                <br />
 
-
-                            <br />
-
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <Button type='submit' variant='contained' color='primary' size="large">Update</Button>
-                            </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={addressValidationText}
+                                        value={address}
+                                        label="Address"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><ContactMailOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={addressInputChangeHandler}
+                                        helperText={addressValidation}
+                                    />
+                                </Grid>
 
 
-                        </form>
-                        <span style={regMsgColor}><b>{regMsg}</b></span>
+                                <br />
 
-                    </Grid>
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <form className="submit" onSubmit={formSubmissionHandlerPassword}>
-
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Old Password"
-                                    error={passErr}
-                                    type="password"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={oldPasswordInputChangeHandler}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={passwordValidationText}
-                                    label="New Password"
-                                    type="password"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={passwordInputChangeHandler}
-                                    helperText={passwordValidation}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={cpasswordValidationText}
-                                    label="Confirm New Password"
-                                    type="password"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={confirmPasswordInputChangeHandler}
-                                    helperText={cpasswordValidation}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <Button type='submit' variant='contained' color='primary' size="large">Update</Button>
-                            </Grid>
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <span style={{ color: 'red', padding: '5px' }}><b>{passErrMsg}</b></span>
-                                <span style={regMsgColor}><b>{successMesssege}</b></span>
-                            </Grid>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <Button type='submit' variant='contained' color='primary' size="large">Update</Button>
+                                </Grid>
 
 
+                            </form>
+                            <span style={regMsgColor}><b>{regMsg}</b></span>
 
-                        </form>
-                    </Grid>
-                </TabPanel>
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <form className="submit" onSubmit={formSubmissionHandlerPassword}>
 
-                {/* panel 3 */}
+                                <Grid item xs={12}>
+                                    <TextField
+                                        label="Old Password"
+                                        error={passErr}
+                                        type="password"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={oldPasswordInputChangeHandler}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={passwordValidationText}
+                                        label="New Password"
+                                        type="password"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={passwordInputChangeHandler}
+                                        helperText={passwordValidation}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={cpasswordValidationText}
+                                        label="Confirm New Password"
+                                        type="password"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={confirmPasswordInputChangeHandler}
+                                        helperText={cpasswordValidation}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <Button type='submit' variant='contained' color='primary' size="large">Update</Button>
+                                </Grid>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <span style={{ color: 'red', padding: '5px' }}><b>{passErrMsg}</b></span>
+                                    <span style={regMsgColor}><b>{successMesssege}</b></span>
+                                </Grid>
 
-                <TabPanel value={value} index={2}>
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <form className="submit" onSubmit={DeleteAccountHandler}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={accDlt}
-                                    label="Confirm Password"
-                                    type="password"
-                                    variant="outlined"
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
-                                    }}
-                                    onChange={confirmPasswordDeleteHandler}
-                                />
-                            </Grid>
-                            <br />
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <Button type='submit' variant="contained"
-                                    color="secondary"
-                                    className={classes.button}
-                                    startIcon={<DeleteIcon />} size="large">Delete</Button>
-                            </Grid>
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <span style={{ color: 'red', padding: '5px' }}><b>{accDltMsg}</b></span>
-                            </Grid>
-                        </form>
 
-                    </Grid>
-                </TabPanel>
 
-            </div>
-        </div>
+                            </form>
+                        </Grid>
+                    </TabPanel>
+
+                    {/* panel 3 */}
+
+                    <TabPanel value={value} index={2}>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <form className="submit" onSubmit={DeleteAccountHandler}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={accDlt}
+                                        label="Confirm Password"
+                                        type="password"
+                                        variant="outlined"
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"><VpnKeyOutlinedIcon /></InputAdornment>,
+                                        }}
+                                        onChange={confirmPasswordDeleteHandler}
+                                    />
+                                </Grid>
+                                <br />
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <Button type='submit' variant="contained"
+                                        color="secondary"
+                                        className={classes.button}
+                                        startIcon={<DeleteIcon />} size="large">Delete</Button>
+                                </Grid>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <span style={{ color: 'red', padding: '5px' }}><b>{accDltMsg}</b></span>
+                                </Grid>
+                            </form>
+                        </Grid>
+                    </TabPanel>
+                </div>
+            </Container>
+        </>
     )
 }
 
