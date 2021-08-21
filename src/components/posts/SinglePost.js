@@ -15,10 +15,7 @@ import { css } from "@emotion/react";
 import { ClipLoader, HashLoader } from "react-spinners";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-
-import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
-
-
+import Button from '@material-ui/core/Button';
 import Comments from './Comments';
 import Header from './../Header';
 //? Time Format Change
@@ -121,10 +118,20 @@ const SinglePost = () => {
         }
 
     }
+    const [copied, setCopied] = useState(false);
+
+    function copy() {
+        const el = document.createElement("input");
+        el.value = window.location.href;
 
 
-    const handleVote = (event, status) => {
 
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+        setCopied(true);
+    }
     const handleDeleteOwnPost = async (event) => {
         event.preventDefault();
         try {
@@ -145,7 +152,6 @@ const SinglePost = () => {
         }
     };
     const handleVoteUp = (event) => {
-
         event.preventDefault();
         try {
             axios.post(`http://127.0.0.1:8000/api/posts/vote/upvote/${id}/${sessionStorage.getItem('id')}`);
@@ -172,20 +178,6 @@ const SinglePost = () => {
 
         </div>
     );
-    const [copied, setCopied] = useState(false);
-
-    function copy() {
-        const el = document.createElement("input");
-        el.value = window.location.href;
-
-
-
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand("copy");
-        document.body.removeChild(el);
-        setCopied(true);
-    }
 
 
     return (
@@ -221,8 +213,6 @@ const SinglePost = () => {
                                     <Grid item>
                                         <ReactTimeAgo date={allPosts.created_at} locale="en-US" />
                                     </Grid>
-
-
                                     <Grid item lg={5}>
                                     </Grid>
                                     {sessionStorage.getItem('uname') === allPosts.user.uname ? <>
@@ -234,7 +224,6 @@ const SinglePost = () => {
                                             <DeleteIcon onClick={handleDeleteOwnPost} />
                                         </IconButton>
                                     </> : <></>}
-
                                 </Grid>
                                 <Grid container spacing={1}>
                                     <h2>{allPosts.title}</h2>
@@ -248,16 +237,14 @@ const SinglePost = () => {
                                 </Grid>
                                 <Grid container spacing={1} className={classes.postsFooter} alignItems="center">
                                     <Grid item xs={6} sm={5} md={4} lg={2}>
-
-                                        <ButtonGroup size="small" value={vote} color="primary">
-                                            <Button value="upvote" aria-label="upvote">
-                                                <ArrowUpwardOutlinedIcon onClick={handleVoteUp} />{allPosts.upvotes.length - allPosts.downvotes.length}
-                                            </Button>
-                                            <Button value="downvote" aria-label="downvote">
-                                                <ArrowDownwardOutlinedIcon onClick={handleVoteDown} />
-                                            </Button>
-                                        </ButtonGroup>
-
+                                    <ButtonGroup size="small" value={vote} color="primary">
+                                                    <Button value="upvote" aria-label="upvote">
+                                                        <ArrowUpwardOutlinedIcon onClick={handleVoteUp} />{allPosts.upvotes.length - allPosts.downvotes.length}
+                                                    </Button>
+                                                    <Button value="downvote" aria-label="downvote">
+                                                        <ArrowDownwardOutlinedIcon onClick={handleVoteDown} />
+                                                    </Button>
+                                                </ButtonGroup>
 
 
                                     </Grid>
@@ -270,7 +257,6 @@ const SinglePost = () => {
                                             <Grid item>
                                                 {allPosts.comments.length}
                                             </Grid>
-
                                         </Grid>
 
                                     </Grid>
@@ -282,29 +268,7 @@ const SinglePost = () => {
                                             <Grid item>
                                                 {allPosts.views === null ? 0 : allPosts.views}
                                             </Grid>
-
                                         </Grid>
-
-                                    </Grid>
-                                    <Grid item xs={2} sm={2} lg={1} justifyContent="center" >
-                                        <Grid container spacing={1} alignItems="center">
-                                            <Grid item>
-
-                                                <IconButton onClick={copy}>
-                                                    <ShareOutlinedIcon />{!copied ? "Copy link" : "Copied!"}
-                                                </IconButton>
-                                            </Grid>
-
-                                        </Grid>
-
-
-                                                <VisibilityOutlinedIcon />
-                                            </Grid>
-                                            <Grid item>
-                                                {allPosts.views === null ? 0 : allPosts.views}
-                                            </Grid>
-                                        </Grid>
-
 
                                     </Grid>
                                 </Grid>
