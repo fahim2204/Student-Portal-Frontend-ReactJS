@@ -15,6 +15,7 @@ import { css } from "@emotion/react";
 import { ClipLoader, HashLoader } from "react-spinners";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 
 import Comments from './Comments';
 import Header from './../Header';
@@ -100,7 +101,7 @@ const SinglePost = () => {
     };
     const handleComment = async (event) => {
         event.preventDefault();
-        if(commentText!==""){
+        if (commentText !== "") {
             let formData = new FormData();
             formData.append('ctext', commentText)
             try {
@@ -108,16 +109,16 @@ const SinglePost = () => {
                 // history.push(`/post/${id}`)
                 getAllPosts();
                 setCommentText("");
-    
+
             } catch (error) {
                 console.log(error);
             }
-        }else{
+        } else {
             alert("Can't Leave empty Comment");
         }
 
     }
-  
+
     const handleVote = (event, status) => {
         event.preventDefault();
         setVote(status);
@@ -140,136 +141,161 @@ const SinglePost = () => {
 
         </div>
     );
+    const [copied, setCopied] = useState(false);
+
+    function copy() {
+        const el = document.createElement("input");
+        el.value = window.location.href;
+
+
+
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+        setCopied(true);
+    }
 
 
     return (
         <>
-         <div style={LoadinAnimeStyle}>
+            <div style={LoadinAnimeStyle}>
                 <HashLoader loading={loading} color='#39E1FA' size={200} css={override} />
             </div>
             {!loading && <>
-            <Header />
-            <Container maxWidth="lg">
-                <Grid container spacing={2} justifyContent="center" >
-                    <Grid item xs={12} sm={8}>
-                        <Paper className={classes.paper} elevation={4}>
-                            <Grid container spacing={1} className={classes.postsHeader}>
-                                <Grid item>
-                                    {allPosts.category.name}
+                <Header />
+                <Container maxWidth="lg">
+                    <Grid container spacing={2} justifyContent="center" >
+                        <Grid item xs={12} sm={8}>
+                            <Paper className={classes.paper} elevation={4}>
+                                <Grid container spacing={1} className={classes.postsHeader}>
+                                    <Grid item>
+                                        {allPosts.category.name}
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="caption" color="textSecondary"> Posted By</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Link to={`/profile/${allPosts.user.uname}`} style={{ textDecoration: 'none' }}>
+                                            <Chip
+                                                size="small"
+                                                icon={<FaceIcon />}
+                                                label={allPosts.user.uname}
+                                                clickable
+                                                color="primary"
+                                                variant="outlined"
+                                            />
+                                        </Link>
+                                    </Grid>
+                                    <Grid item>
+                                        <ReactTimeAgo date={allPosts.created_at} locale="en-US" />
+                                    </Grid>
                                 </Grid>
-                                <Grid item>
-                                    <Typography variant="caption" color="textSecondary"> Posted By</Typography>
+                                <Grid container spacing={1}>
+                                    <h2>{allPosts.title}</h2>
                                 </Grid>
-                                <Grid item>
-                                    <Link to={`/profile/${allPosts.user.uname}`} style={{ textDecoration: 'none' }}>
-                                        <Chip
-                                            size="small"
-                                            icon={<FaceIcon />}
-                                            label={allPosts.user.uname}
-                                            clickable
-                                            color="primary"
-                                            variant="outlined"
-                                        />
+                                <Grid container spacing={1}>
+                                    <Link to={`/post/fgf`} style={{ textDecoration: 'none', color: 'black' }}>
+                                        <Typography variant="body1" color="initial">
+                                            {allPosts.pbody}
+                                        </Typography>
                                     </Link>
                                 </Grid>
-                                <Grid item>
-                                    <ReactTimeAgo date={allPosts.created_at} locale="en-US" />
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={1}>
-                                <h2>{allPosts.title}</h2>
-                            </Grid>
-                            <Grid container spacing={1}>
-                                <Link to={`/post/fgf`} style={{ textDecoration: 'none', color: 'black' }}>
-                                    <Typography variant="body1" color="initial">
-                                       {allPosts.pbody}
-                                    </Typography>
-                                </Link>
-                            </Grid>
-                            <Grid container spacing={1} className={classes.postsFooter} alignItems="center">
-                                <Grid item xs={6} sm={5} md={4} lg={2}>
-                                    <ToggleButtonGroup size="small" value={vote} color="primary" onChange={handleVote}>
-                                        <ToggleButton value="upvote" aria-label="upvote">
-                                            <ArrowUpwardOutlinedIcon />{allPosts.upvotes.length-allPosts.downvotes.length}
-                                        </ToggleButton>
-                                        <ToggleButton value="downvote" aria-label="downvote">
-                                            <ArrowDownwardOutlinedIcon />
-                                        </ToggleButton>
-                                    </ToggleButtonGroup>
+                                <Grid container spacing={1} className={classes.postsFooter} alignItems="center">
+                                    <Grid item xs={6} sm={5} md={4} lg={2}>
+                                        <ToggleButtonGroup size="small" value={vote} color="primary" onChange={handleVote}>
+                                            <ToggleButton value="upvote" aria-label="upvote">
+                                                <ArrowUpwardOutlinedIcon />{allPosts.upvotes.length - allPosts.downvotes.length}
+                                            </ToggleButton>
+                                            <ToggleButton value="downvote" aria-label="downvote">
+                                                <ArrowDownwardOutlinedIcon />
+                                            </ToggleButton>
+                                        </ToggleButtonGroup>
 
 
-                                </Grid>
-                                <Grid item xs={2} sm={2} lg={1}>
-
-                                    <Grid container spacing={1} alignItems="center">
-                                        <Grid item>
-                                            <CommentOutlinedIcon />
-                                        </Grid>
-                                        <Grid item>
-                                           {allPosts.comments.length}
-                                        </Grid>
                                     </Grid>
+                                    <Grid item xs={2} sm={2} lg={1}>
 
-                                </Grid>
-                                <Grid item xs={2} sm={2} lg={1} justifyContent="center" >
-                                    <Grid container spacing={1} alignItems="center">
-                                        <Grid item>
-                                            <VisibilityOutlinedIcon />
+                                        <Grid container spacing={1} alignItems="center">
+                                            <Grid item>
+                                                <CommentOutlinedIcon />
+                                            </Grid>
+                                            <Grid item>
+                                                {allPosts.comments.length}
+                                            </Grid>
                                         </Grid>
-                                        <Grid item>
-                                        {allPosts.views===null? 0 : allPosts.views}
-                                        </Grid>
+
                                     </Grid>
+                                    <Grid item xs={2} sm={2} lg={1} justifyContent="center" >
+                                        <Grid container spacing={1} alignItems="center">
+                                            <Grid item>
+                                                <VisibilityOutlinedIcon />
+                                            </Grid>
+                                            <Grid item>
+                                                {allPosts.views === null ? 0 : allPosts.views}
+                                            </Grid>
+                                        </Grid>
 
+                                    </Grid>
+                                    <Grid item xs={2} sm={2} lg={1} justifyContent="center" >
+                                        <Grid container spacing={1} alignItems="center">
+                                            <Grid item>
+                                                <IconButton>
+                                                    <ShareOutlinedIcon onClick={copy} />{!copied ? "Copy link" : "Copied!"}
+                                                </IconButton>
+                                            </Grid>
+
+                                        </Grid>
+
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </Paper>
-
-
-
-                        {/* comment section */}
-
-                        <Paper className={classes.paperLogin} elevation={3}>
-                            <Grid container spacing={3}>
-                            {sessionStorage.getItem('id')!==null? <>
-                                <Grid item xs={9} md={10} lg={11}>
-                                    <TextField
-                                        style={{ width: "100%" }}
-                                        id="ctext"
-                                        label="Add Comment"
-                                        multiline
-                                        required
-                                        variant="outlined"
-                                        onChange={handleCommentText}
-                                    />
-                                </Grid>
-                                <Grid item xs={3} md={2} lg={1}>
-                                    <Fab color="primary" aria-label="add" className={classes.margin}>
-                                        <SendIcon onClick={handleComment} />
-                                    </Fab>
-                                </Grid>
-                            
-                            </> : <>
-                            <Paper className={classes.paperunLogin} elevation={0}>
-                                <Typography  variant="h6" color="initial">Please  
-                                <Link style={{marginLeft:"5px",marginRight:"5px"}} to="/login">
-                                login
-                                </Link>
-                                
-                                  to Comment</Typography>
                             </Paper>
-                            </>}
-                                <Grid item xs={12}>
-                                    <h3>Comments</h3>
+
+
+
+                            {/* comment section */}
+
+                            <Paper className={classes.paperLogin} elevation={3}>
+                                <Grid container spacing={3}>
+                                    {sessionStorage.getItem('id') !== null ? <>
+                                        <Grid item xs={9} md={10} lg={11}>
+                                            <TextField
+                                                style={{ width: "100%" }}
+                                                id="ctext"
+                                                label="Add Comment"
+                                                multiline
+                                                required
+                                                variant="outlined"
+                                                onChange={handleCommentText}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={3} md={2} lg={1}>
+                                            <Fab color="primary" aria-label="add" className={classes.margin}>
+                                                <SendIcon onClick={handleComment} />
+                                            </Fab>
+                                        </Grid>
+
+                                    </> : <>
+                                        <Paper className={classes.paperunLogin} elevation={0}>
+                                            <Typography variant="h6" color="initial">Please
+                                                <Link style={{ marginLeft: "5px", marginRight: "5px" }} to="/login">
+                                                    login
+                                                </Link>
+
+                                                to Comment</Typography>
+                                        </Paper>
+                                    </>}
+                                    <Grid item xs={12}>
+                                        <h3>Comments</h3>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {allComments}
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    {allComments}
-                                </Grid>
-                            </Grid>
-                        </Paper>
+                            </Paper>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Container>
+                </Container>
             </>}
         </>
     )

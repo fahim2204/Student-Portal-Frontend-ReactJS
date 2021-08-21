@@ -28,14 +28,14 @@ const useStyles = makeStyles({
 const AboutUs = () => {
 
     const classes = useStyles();
-    let [loading, setLoading] = useState(true);
+    // let [loading, setLoading] = useState(true);
     let [categories, setCategories] = useState([]);
 
     const getCategory = () => {
         axios.get(`http://127.0.0.1:8000/api/categories`)
             .then(res => {
                 setCategories(res.data);
-                setLoading(false);
+                // setLoading(false);
             });
     }
 
@@ -63,8 +63,8 @@ const AboutUs = () => {
                 <Paper elevation={5} className={classes.card}>
                     <Typography variant="body1" color="initial">Categories</Typography>
                     <br />
-                    <HashLoader loading={loading} color='#39E1FA' size={100} />
-                    {!loading && <>
+                    {/* <HashLoader loading={loading} color='#39E1FA' size={100} />
+                    {!loading && <> */}
 
                         <List component="nav" className={classes.links}>
                             {categories.map(category => {
@@ -78,13 +78,13 @@ const AboutUs = () => {
                             })}
                         </List>
 
-                    </>}
+                    {/* </>} */}
                 </Paper>
                 <Paper elevation={5} className={classes.card}>
                     <Typography variant="body1" color="initial">Quick Links</Typography>
                     <br />
-                    <HashLoader loading={loading} color='#39E1FA' size={100} />
-                    {!loading && <>
+                    {/* <HashLoader loading={loading} color='#39E1FA' size={100} />
+                    {!loading && <> */}
 
                         <List component="nav" className={classes.links}>
                             <Link className={classes.linksStyle} to={`#`}>About Us</Link>
@@ -95,7 +95,7 @@ const AboutUs = () => {
                             <Divider style={{ marginTop: "5px", marginBottom: "5px" }} />
                         </List>
 
-                    </>}
+                    {/* </>} */}
                 </Paper>
 
             </Container>
