@@ -85,7 +85,16 @@ const CreatePosts = () => {
 
     }
     if (uid === null) {
-        return (<h1>Unauthorized Access, please Login</h1>)
+        setTimeout(
+            () => history.push("/login"), 
+            3000
+          );
+        return (
+            <>
+        <h1>Unauthorized Access</h1>
+        <h3>Redirecting to login</h3>
+        </>
+        )
     } else {
         return (
             <>
