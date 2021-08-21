@@ -282,7 +282,6 @@ const SinglePost = () => {
                                             <Grid item xs={2} sm={2} lg={1} justifyContent="center" >
                                                 <Grid container spacing={1} alignItems="center">
                                                     <Grid item>
-
                                                         <IconButton onClick={copy}>
                                                             <ShareOutlinedIcon />{!copied ? "Copy link" : "Copied!"}
                                                         </IconButton>

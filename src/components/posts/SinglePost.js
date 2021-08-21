@@ -18,6 +18,7 @@ import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Comments from './Comments';
 import Header from './../Header';
+import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 //? Time Format Change
 import TimeAgo from 'javascript-time-ago'
 import ReactTimeAgo from 'react-time-ago'
@@ -237,19 +238,18 @@ const SinglePost = () => {
                                 </Grid>
                                 <Grid container spacing={1} className={classes.postsFooter} alignItems="center">
                                     <Grid item xs={6} sm={5} md={4} lg={2}>
-                                    <ButtonGroup size="small" value={vote} color="primary">
-                                                    <Button value="upvote" aria-label="upvote">
-                                                        <ArrowUpwardOutlinedIcon onClick={handleVoteUp} />{allPosts.upvotes.length - allPosts.downvotes.length}
-                                                    </Button>
-                                                    <Button value="downvote" aria-label="downvote">
-                                                        <ArrowDownwardOutlinedIcon onClick={handleVoteDown} />
-                                                    </Button>
-                                                </ButtonGroup>
+                                        <ButtonGroup size="small" value={vote} color="primary">
+                                            <Button value="upvote" aria-label="upvote">
+                                                <ArrowUpwardOutlinedIcon onClick={handleVoteUp} />{allPosts.upvotes.length - allPosts.downvotes.length}
+                                            </Button>
+                                            <Button value="downvote" aria-label="downvote">
+                                                <ArrowDownwardOutlinedIcon onClick={handleVoteDown} />
+                                            </Button>
+                                        </ButtonGroup>
 
 
                                     </Grid>
                                     <Grid item xs={2} sm={2} lg={1}>
-
                                         <Grid container spacing={1} alignItems="center">
                                             <Grid item>
                                                 <CommentOutlinedIcon />
@@ -269,7 +269,11 @@ const SinglePost = () => {
                                                 {allPosts.views === null ? 0 : allPosts.views}
                                             </Grid>
                                         </Grid>
-
+                                    </Grid>
+                                    <Grid item xs={2} sm={2} lg={1}>
+                                        <IconButton size="small" onClick={copy}>
+                                            <ShareOutlinedIcon />{!copied ? "Copy link" : "Copied!"}
+                                        </IconButton>
                                     </Grid>
                                 </Grid>
                             </Paper>
