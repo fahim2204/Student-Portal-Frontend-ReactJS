@@ -321,6 +321,20 @@ const Edit = () => {
         setValue(newValue);
     };
 
+
+
+    if (sessionStorage.getItem('id') === null || sessionStorage.getItem('uname')!==uname) {
+        setTimeout(
+            () => history.push("/login"), 
+            3000
+          );
+        return (
+            <>
+        <h1>Unauthorized Access</h1>
+        <h3>Redirecting to login</h3>
+        </>
+        )
+    }else{
     return (
         <>
             <Header />
@@ -549,7 +563,7 @@ const Edit = () => {
                 </div>
             </Container>
         </>
-    )
+    )}
 }
 
 export default Edit

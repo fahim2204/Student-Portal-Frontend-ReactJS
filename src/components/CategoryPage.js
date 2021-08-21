@@ -51,7 +51,7 @@ const Home = () => {
 
     const getAllPosts = () => {
 
-        axios.get(`http://127.0.0.1:8000/api/posts/${cat}`)
+        axios.get(`http://127.0.0.1:8000/api/posts/category/${cat}`)
             .then(res => {
                 setAllPosts(res.data);
                 setLoading(false);

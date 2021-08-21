@@ -1,4 +1,4 @@
-import { Box, Chip, Container, Fab, Grid, IconButton, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
+import { Box, Chip, Container, Fab, Grid, IconButton, makeStyles, Paper, TextField, Typography, ButtonGroup } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react'
 import EditIcon from '@material-ui/icons/Edit';
@@ -15,7 +15,9 @@ import { css } from "@emotion/react";
 import { ClipLoader, HashLoader } from "react-spinners";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
+
 
 import Comments from './Comments';
 import Header from './../Header';
@@ -75,7 +77,8 @@ const SinglePost = () => {
     let [loading, setLoading] = useState(true);
     let history = new useHistory();
     let [comment, setcomment] = useState([]);
-    TimeAgo.addDefaultLocale(en)
+    let [vote, setVote] = useState([]);
+    // TimeAgo.addDefaultLocale(en)
 
     const getAllPosts = () => {
         axios.get(`http://127.0.0.1:8000/api/posts/${id}`)
@@ -94,8 +97,8 @@ const SinglePost = () => {
 
 
     const classes = useStyles();
+    // setLoading(true)
 
-    const [vote, setVote] = React.useState('');
     let handleCommentText = (event) => {
         setCommentText(event.target.value);
     };
@@ -119,9 +122,37 @@ const SinglePost = () => {
 
     }
 
+
     const handleVote = (event, status) => {
+
+    const handleDeleteOwnPost = async (event) => {
         event.preventDefault();
-        setVote(status);
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/posts/${id}/${sessionStorage.getItem('id')}`);
+            history.push(`/`)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleVoteDown = (event) => {
+        event.preventDefault();
+        try {
+            axios.post(`http://127.0.0.1:8000/api/posts/vote/downvote/${id}/${sessionStorage.getItem('id')}`);
+            getAllPosts();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const handleVoteUp = (event) => {
+
+        event.preventDefault();
+        try {
+            axios.post(`http://127.0.0.1:8000/api/posts/vote/upvote/${id}/${sessionStorage.getItem('id')}`);
+            getAllPosts();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
 
@@ -190,6 +221,20 @@ const SinglePost = () => {
                                     <Grid item>
                                         <ReactTimeAgo date={allPosts.created_at} locale="en-US" />
                                     </Grid>
+
+
+                                    <Grid item lg={5}>
+                                    </Grid>
+                                    {sessionStorage.getItem('uname') === allPosts.user.uname ? <>
+                                        <IconButton size="small" aria-label="delete" className={classes.margin}>
+                                            <EditIcon />
+                                        </IconButton>
+
+                                        <IconButton size="small" aria-label="delete" className={classes.margin}>
+                                            <DeleteIcon onClick={handleDeleteOwnPost} />
+                                        </IconButton>
+                                    </> : <></>}
+
                                 </Grid>
                                 <Grid container spacing={1}>
                                     <h2>{allPosts.title}</h2>
@@ -203,14 +248,16 @@ const SinglePost = () => {
                                 </Grid>
                                 <Grid container spacing={1} className={classes.postsFooter} alignItems="center">
                                     <Grid item xs={6} sm={5} md={4} lg={2}>
-                                        <ToggleButtonGroup size="small" value={vote} color="primary" onChange={handleVote}>
-                                            <ToggleButton value="upvote" aria-label="upvote">
-                                                <ArrowUpwardOutlinedIcon />{allPosts.upvotes.length - allPosts.downvotes.length}
-                                            </ToggleButton>
-                                            <ToggleButton value="downvote" aria-label="downvote">
-                                                <ArrowDownwardOutlinedIcon />
-                                            </ToggleButton>
-                                        </ToggleButtonGroup>
+
+                                        <ButtonGroup size="small" value={vote} color="primary">
+                                            <Button value="upvote" aria-label="upvote">
+                                                <ArrowUpwardOutlinedIcon onClick={handleVoteUp} />{allPosts.upvotes.length - allPosts.downvotes.length}
+                                            </Button>
+                                            <Button value="downvote" aria-label="downvote">
+                                                <ArrowDownwardOutlinedIcon onClick={handleVoteDown} />
+                                            </Button>
+                                        </ButtonGroup>
+
 
 
                                     </Grid>
@@ -223,6 +270,7 @@ const SinglePost = () => {
                                             <Grid item>
                                                 {allPosts.comments.length}
                                             </Grid>
+
                                         </Grid>
 
                                     </Grid>
@@ -234,18 +282,29 @@ const SinglePost = () => {
                                             <Grid item>
                                                 {allPosts.views === null ? 0 : allPosts.views}
                                             </Grid>
+
                                         </Grid>
 
                                     </Grid>
                                     <Grid item xs={2} sm={2} lg={1} justifyContent="center" >
                                         <Grid container spacing={1} alignItems="center">
                                             <Grid item>
+
                                                 <IconButton onClick={copy}>
                                                     <ShareOutlinedIcon />{!copied ? "Copy link" : "Copied!"}
                                                 </IconButton>
                                             </Grid>
 
                                         </Grid>
+
+
+                                                <VisibilityOutlinedIcon />
+                                            </Grid>
+                                            <Grid item>
+                                                {allPosts.views === null ? 0 : allPosts.views}
+                                            </Grid>
+                                        </Grid>
+
 
                                     </Grid>
                                 </Grid>
